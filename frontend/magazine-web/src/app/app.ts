@@ -4,6 +4,7 @@ import { ActivatedRoute, NavigationEnd, Router, RouterLink, RouterLinkActive, Ro
 import { filter, map } from 'rxjs';
 
 import { AdminSession } from './admin/admin.session';
+import { ApiStatusService } from './core/api-status.service';
 import { SITE_EMAIL } from './core/site.config';
 
 @Component({
@@ -18,6 +19,7 @@ export class App {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   protected readonly admin = inject(AdminSession);
+  protected readonly apiStatus = inject(ApiStatusService);
 
   protected readonly lang$ = this.route.queryParamMap.pipe(map((q) => (q.get('lang') === 'en' ? 'en' : 'hi')));
   protected readonly isMobileMenuOpen = signal(false);
@@ -25,6 +27,7 @@ export class App {
   protected readonly isAdminRoute = signal<boolean>(this.router.url.startsWith('/admin'));
 
   constructor() {
+    void this.apiStatus.check();
     this.router.events
       .pipe(
         filter((e): e is NavigationEnd => e instanceof NavigationEnd),

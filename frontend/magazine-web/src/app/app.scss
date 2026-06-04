@@ -137,6 +137,25 @@
   color: var(--magenta);
 }
 
+.apiBanner {
+  background: #fef3c7;
+  border-bottom: 1px solid #f59e0b;
+  color: #78350f;
+  font-size: 0.88rem;
+  line-height: 1.5;
+}
+
+.apiBanner__inner {
+  padding: 0.65rem 1rem;
+}
+
+.apiBanner code {
+  font-size: 0.82rem;
+  background: rgba(255, 255, 255, 0.65);
+  padding: 0.1rem 0.35rem;
+  border-radius: 4px;
+}
+
 .mobileMenu {
   background: #fff;
   border-bottom: 2px solid var(--magenta);

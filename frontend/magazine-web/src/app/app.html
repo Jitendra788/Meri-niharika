@@ -50,6 +50,18 @@
     </nav>
   </header>
 
+  <div
+    class="apiBanner"
+    *ngIf="apiStatus.checked() && apiStatus.backendMissing()"
+    role="status"
+  >
+    <div class="container apiBanner__inner">
+      <strong>डेटा लोड नहीं हो रहा</strong> — Vercel में Environment Variable
+      <code>BACKEND_URL</code> = आपका Render API URL (जैसे <code>https://xxx.onrender.com</code>) सेट करके Redeploy करें।
+      Render पर <code>ALLOWED_ORIGINS</code> में यह Vercel URL भी जोड़ें।
+    </div>
+  </div>
+
   <div class="mobileMenu" *ngIf="isMobileMenuOpen()">
     <nav class="mobileMenu__nav container">
       <a class="mobileMenu__link" routerLink="/" (click)="closeMobileMenu()">मुखपृष्ठ</a>
