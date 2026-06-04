@@ -25,6 +25,6 @@ services:
       - key: ADMIN_USERNAME
         value: admin
       - key: ALLOWED_ORIGINS
-        value: http://localhost:4200,https://localhost:4200
+        value: http://localhost:4200,https://localhost:4200,https://meri-niharika.vercel.app
       - key: DATABASE_URL
         sync: false
