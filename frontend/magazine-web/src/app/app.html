@@ -51,14 +51,22 @@
   </header>
 
   <div
-    class="apiBanner"
+    class="apiBanner apiBanner--warn"
     *ngIf="apiStatus.checked() && apiStatus.backendMissing()"
     role="status"
   >
     <div class="container apiBanner__inner">
-      <strong>डेटा लोड नहीं हो रहा</strong> — Vercel → Settings → Environment Variables में
-      <code>BACKEND_URL</code> = Render URL (जैसे <code>https://ishqora-api.onrender.com</code>) डालें, फिर <strong>Redeploy</strong>।
-      Render backend पहले live होना चाहिए (<code>/api/health</code> खुले)।
+      <strong>डेटा लोड नहीं हो रहा</strong> — Vercel में <code>BACKEND_URL</code> = Render API URL सेट करें और Redeploy करें।
+      अभी build में static data नहीं मिली।
+    </div>
+  </div>
+  <div
+    class="apiBanner apiBanner--info"
+    *ngIf="apiStatus.checked() && apiStatus.usingStaticData()"
+    role="status"
+  >
+    <div class="container apiBanner__inner">
+      सामग्री <strong>offline copy</strong> से दिख रही है। Admin के लिए Render + <code>BACKEND_URL</code> जोड़ें।
     </div>
   </div>
 

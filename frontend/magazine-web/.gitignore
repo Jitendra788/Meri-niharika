@@ -1,5 +1,9 @@
 # See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
 
+# Generated on build (sync-static-data.mjs)
+/public/data
+/public/uploads
+
 # Compiled output
 /dist
 /tmp

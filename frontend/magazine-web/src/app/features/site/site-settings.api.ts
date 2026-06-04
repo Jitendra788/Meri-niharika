@@ -3,41 +3,18 @@ import { inject, Injectable } from '@angular/core';
 import { catchError, map, of } from 'rxjs';
 
 import { API_BASE_URL } from '../../core/api.tokens';
+import { StaticDataService } from '../../core/static-data.service';
 import { normalizeHeroSlides } from './hero-slides.util';
+import { SITE_DEFAULTS } from './site-settings.defaults';
 import { SiteSettings } from './site-settings.types';
 
-export const SITE_DEFAULTS: SiteSettings = {
-  hero_tagline_line1: 'हर नारी की कहानी, हर भावना की ज़ुबानी',
-  hero_tagline_line2: 'Love Stories, Live Forever',
-  hero_slides: [
-    {
-      image: '/hero-banner.png',
-      category_label: 'सोसायटी',
-      title: 'धर्म नहीं ऐजुकेशन जरूरी',
-      link: '/article/power-of-education'
-    }
-  ],
-  intro_editorial_title: 'संपादक की बात',
-  intro_editorial_text:
-    'Ishqora में आपका स्वागत है। यह मंच हर नारी की आवाज़, हर रचनाकार की भावना और हर पाठक के लिए समर्पित है।',
-  intro_editorial_image: '/hero-banner.png',
-  intro_letter_title: 'खत लिख दो...',
-  intro_letter_text: 'अपनी बात, सुझाव या रचना हमें लिखकर भेजें। आपका खत हमारे लिए महत्वपूर्ण है।',
-  intro_letter_image: '/hero-banner.png',
-  bottom_archive_title: 'बोलते पत्थर',
-  bottom_archive_text: 'इतिहास की झाँकी — पुरानी यादें और किस्से...',
-  bottom_newsletter_title: 'हमसे जुड़ें',
-  bottom_newsletter_text: 'नई कहानियाँ और अपडेट ईमेल पर पाएँ।',
-  bottom_social_title: 'हमें फॉलो करें',
-  bottom_social_text: 'सोशल मीडिया पर जुड़ें।',
-  editorial_page_title: 'संपादकीय',
-  editorial_page_body: 'यहाँ संपादक का संदेश दिखेगा।'
-};
+export { SITE_DEFAULTS } from './site-settings.defaults';
 
 @Injectable({ providedIn: 'root' })
 export class SiteSettingsApi {
   private readonly http = inject(HttpClient);
   private readonly base = inject(API_BASE_URL);
+  private readonly staticData = inject(StaticDataService);
 
   private withNormalizedSlides(s: SiteSettings): SiteSettings {
     return { ...s, hero_slides: normalizeHeroSlides(s.hero_slides) };
@@ -46,7 +23,9 @@ export class SiteSettingsApi {
   getPublic() {
     return this.http.get<SiteSettings>(`${this.base}/api/site`).pipe(
       map((s) => this.withNormalizedSlides(s)),
-      catchError(() => of({ ...SITE_DEFAULTS }))
+      catchError(() =>
+        this.staticData.getSiteSettings().pipe(map((s) => this.withNormalizedSlides(s)))
+      )
     );
   }
 
