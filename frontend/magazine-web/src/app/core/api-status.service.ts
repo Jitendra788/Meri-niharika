@@ -9,14 +9,26 @@ export class ApiStatusService {
   readonly checked = signal(false);
 
   async check(): Promise<void> {
-    const base = this.apiBase?.trim();
-    if (!base) {
-      this.backendMissing.set(true);
-      this.checked.set(true);
-      return;
-    }
     try {
-      const res = await fetch(`${base}/api/health`, { cache: 'no-store' });
+      const cfg = await fetch('/api/config', { cache: 'no-store' });
+      if (cfg.ok) {
+        const j = (await cfg.json()) as { apiBaseUrl?: string };
+        if (!(j.apiBaseUrl || '').trim()) {
+          this.backendMissing.set(true);
+          this.checked.set(true);
+          return;
+        }
+      }
+    } catch {
+      /* not on Vercel */
+    }
+
+    const healthUrl = this.apiBase?.trim()
+      ? `${this.apiBase.replace(/\/$/, '')}/api/health`
+      : '/api/health';
+
+    try {
+      const res = await fetch(healthUrl, { cache: 'no-store' });
       this.backendMissing.set(!res.ok);
     } catch {
       this.backendMissing.set(true);

@@ -11,7 +11,7 @@ export const SITE_DEFAULTS: SiteSettings = {
   hero_tagline_line2: 'Love Stories, Live Forever',
   hero_slides: [
     {
-      image: '/uploads/images/hero-power-of-education.png',
+      image: '/hero-banner.png',
       category_label: 'सोसायटी',
       title: 'धर्म नहीं ऐजुकेशन जरूरी',
       link: '/article/power-of-education'

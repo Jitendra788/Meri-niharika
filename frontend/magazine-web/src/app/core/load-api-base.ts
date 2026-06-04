@@ -10,7 +10,7 @@ export async function loadApiBaseUrl(): Promise<string> {
     if (res.ok) {
       const data = (await res.json()) as { apiBaseUrl?: string };
       const url = (data.apiBaseUrl || '').trim().replace(/\/$/, '');
-      if (url) return url;
+      if (url) return '';
     }
   } catch {
     /* offline or not on Vercel */
