@@ -75,10 +75,43 @@ Note: `serve` proxy नहीं करता — असली proxy सिर�
 
 ---
 
+## 404 NOT_FOUND (सफेद Vercel पेज)
+
+यह तब आता है जब **build output गलत folder** से serve हो रहा हो।
+
+### Vercel Dashboard → Project → Settings → General
+
+| Setting | सही value |
+|---------|------------|
+| **Root Directory** | खाली **या** `frontend/magazine-web` (दोनों में से एक — नीचे देखें) |
+
+**Option A — Repo root (आसान):** Root Directory **खाली** रखें। Repo में root `vercel.json` build path set करता है।
+
+**Option B — Subfolder:** Root Directory = `frontend/magazine-web`  
+→ Build: `npm run vercel-build`  
+→ Output: `dist/magazine-web/browser`
+
+### Deployments tab
+
+- Latest deploy **Ready** (हरा) होना चाहिए — **Error** हो तो Build Logs खोलें।
+
+### Test URL
+
+पहले ये खोलें (अपना project name लगाएँ):
+
+`https://YOUR-PROJECT.vercel.app/`
+
+फिर `https://YOUR-PROJECT.vercel.app/index.html`
+
+दोनों 404 → Output Directory गलत है।
+
+---
+
 ## समस्याएँ
 
 | समस्या | हल |
 |--------|-----|
+| **404 NOT_FOUND** | ऊपर वाला section; Output = `dist/magazine-web/browser` |
 | साइट खाली / कोई article नहीं | Vercel में `BACKEND_URL` set + Redeploy |
 | Admin login fail | Render `ALLOWED_ORIGINS` में Vercel URL |
 | Images नहीं | `BACKEND_URL` सही; Render पर `uploads` मौजूद |
