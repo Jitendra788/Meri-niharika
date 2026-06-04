@@ -28,7 +28,7 @@ def _story(
         "slug": slug,
         "excerpt": excerpt,
         "content": body,
-        "cover_url": "/uploads/images/news-card.svg",
+        "cover_url": f"/uploads/images/kahani/{slug}.svg",
         "category_slug": "kahani",
         "tags": ["नैतिक कहानी", "बच्चों की कहानी", "Ishqora"],
         "language": "hi",

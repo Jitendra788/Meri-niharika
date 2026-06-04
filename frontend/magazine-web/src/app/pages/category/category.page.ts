@@ -116,6 +116,10 @@ export class CategoryPage implements OnInit {
     return a.category_slug === 'lekh' || (a.tags?.includes('समाचार') ?? false);
   }
 
+  private isMoralKahani(a: Article): boolean {
+    return a.tags?.includes('नैतिक कहानी') ?? false;
+  }
+
   private articleCard(a: Article): CategoryCard {
     const author = a.tags?.[0];
     const partsTag =
@@ -130,8 +134,14 @@ export class CategoryPage implements OnInit {
     if (!cover && a.category_slug === 'love-story') {
       cover = this.defaultLoveCover(seriesKey);
     }
+    if (!cover && this.isMoralKahani(a)) {
+      cover = this.defaultKahaniCover(a.slug);
+    }
     if (!cover && this.isNewsArticle(a)) {
       cover = '/uploads/images/news-card.svg';
+    }
+    if (!cover && a.category_slug === 'kahani') {
+      cover = this.defaultKahaniCover(a.slug);
     }
     return {
       kind: 'article',
@@ -178,11 +188,18 @@ export class CategoryPage implements OnInit {
     return `/uploads/images/love-story/${seriesSlug}.jpg`;
   }
 
+  private defaultKahaniCover(slug: string): string {
+    return `/uploads/images/kahani/${slug}.svg`;
+  }
+
   cardImage(item: CategoryCard): string {
     if (item.kind === 'pdf') {
       return pdfCoverImage(this.apiBase, item) || `${this.apiBase}/uploads/images/news-card.svg`;
     }
     const url = item.cover_url || '';
+    if (!url && item.tag === 'कहानी') {
+      return `${this.apiBase}/uploads/images/kahani/${item.slug}.svg`;
+    }
     if (!url) return `${this.apiBase}/uploads/images/news-card.svg`;
     if (url.startsWith('http')) return url;
     return `${this.apiBase}${url}`;
@@ -196,8 +213,12 @@ export class CategoryPage implements OnInit {
       img.src = `${this.apiBase}/uploads/images/news-card.svg`;
       return;
     }
+    if (item.tag === 'कहानी' && item.slug) {
+      img.src = `${this.apiBase}/uploads/images/kahani/${item.slug}.svg`;
+      return;
+    }
     const key = item.series_slug || item.slug;
-    if (key) {
+    if (key && this.categorySlug === 'love-story') {
       img.src = `${this.apiBase}/uploads/images/love-story/${key}.svg`;
     }
   }

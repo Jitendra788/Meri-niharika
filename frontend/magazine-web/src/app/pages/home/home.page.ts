@@ -16,6 +16,7 @@ type GridCard = {
   link: string;
   img?: string;
   isNews?: boolean;
+  isKahani?: boolean;
 };
 
 type HeroSlideView = HeroSlide & { imageUrl: string };
@@ -160,6 +161,10 @@ export class HomePage implements OnDestroy {
     return a.category_slug === 'lekh' || (a.tags?.includes('समाचार') ?? false);
   }
 
+  private isMoralKahani(a: Article): boolean {
+    return a.tags?.includes('नैतिक कहानी') ?? false;
+  }
+
   cardImage(c: GridCard): string {
     if (c.img) return c.img;
     return this.siteApi.resolveAsset('/uploads/images/news-card.svg');
@@ -170,7 +175,9 @@ export class HomePage implements OnDestroy {
     if (img.dataset['fallback'] === '1') return;
     img.dataset['fallback'] = '1';
     const key = c.link.replace(/^\/article\//, '').replace(/-bhag-\d+$/, '');
-    if (!c.isNews && key) {
+    if (c.isKahani && key) {
+      img.src = this.siteApi.resolveAsset(`/uploads/images/kahani/${key}.svg`);
+    } else if (!c.isNews && key) {
       img.src = this.siteApi.resolveAsset(`/uploads/images/love-story/${key}.svg`);
     } else {
       img.src = this.siteApi.resolveAsset('/uploads/images/news-card.svg');
@@ -184,6 +191,9 @@ export class HomePage implements OnDestroy {
     if (!img && a.category_slug === 'love-story') {
       img = this.siteApi.resolveAsset(`/uploads/images/love-story/${seriesKey}.jpg`);
     }
+    if (!img && (this.isMoralKahani(a) || a.category_slug === 'kahani')) {
+      img = this.siteApi.resolveAsset(`/uploads/images/kahani/${a.slug}.svg`);
+    }
     if (!img && this.isNewsArticle(a)) {
       img = this.siteApi.resolveAsset('/uploads/images/news-card.svg');
     }
@@ -192,7 +202,8 @@ export class HomePage implements OnDestroy {
       excerpt: a.excerpt || '',
       link: `/article/${a.slug}`,
       img,
-      isNews: this.isNewsArticle(a)
+      isNews: this.isNewsArticle(a),
+      isKahani: this.isMoralKahani(a) || a.category_slug === 'kahani'
     };
   }
 
