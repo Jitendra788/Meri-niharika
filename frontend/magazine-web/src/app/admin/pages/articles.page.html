@@ -1,0 +1,150 @@
+<div class="pageHead">
+  <h1>लेख / पोस्ट</h1>
+  <p>कविता, स्वास्थ्य, मनोरंजन, धर्म-आस्था, लेख, SBI — सभी श्रेणियों के पोस्ट यहाँ प्रबंधित करें</p>
+</div>
+
+<div class="pageGuide">
+  <strong>कैसे करें:</strong>
+  <ol>
+    <li>दाईं ओर <strong>शीर्षक</strong>, <strong>श्रेणी</strong> और <strong>सामग्री</strong> भरें</li>
+    <li><strong>स्थिति = प्रकाशित</strong> रखें — तभी साइट पर दिखेगा</li>
+    <li><strong>पोस्ट बनाएँ</strong> या संपादन के बाद <strong>अपडेट करें</strong> दबाएँ</li>
+    <li>बाईं सूची से पुराना पोस्ट चुनकर बदलें या <strong>हटाएँ</strong> दबाएँ</li>
+  </ol>
+</div>
+
+<div class="pageToolbar">
+  <a class="btn btn--ghost" href="/" target="_blank" rel="noopener">साइट देखें ↗</a>
+  <button class="btn btn--ghost" type="button" (click)="load()" [disabled]="loading">↻ रिफ्रेश</button>
+</div>
+
+<p class="alert alert--err" *ngIf="error">{{ error }}</p>
+<p class="alert alert--ok" *ngIf="success">{{ success }}</p>
+
+<div class="articlesLayout">
+  <section class="panel panel--list">
+    <div class="listHead">
+      <div>
+        <h2>सभी पोस्ट</h2>
+        <span class="countBadge" *ngIf="!loading">{{ articles.length }} पोस्ट</span>
+      </div>
+      <div class="btnRow">
+        <select class="selectInput" [(ngModel)]="filter" (change)="load()">
+          <option value="all">सभी स्थिति</option>
+          <option value="published">प्रकाशित</option>
+          <option value="draft">ड्राफ्ट</option>
+        </select>
+        <select class="selectInput" [(ngModel)]="categoryFilter" (change)="load()">
+          <option value="all">सभी श्रेणियाँ</option>
+          <option *ngFor="let c of categories" [value]="c.slug">{{ c.label }}</option>
+        </select>
+        <button class="btn btn--mag" type="button" (click)="newArticle(categoryFilter !== 'all' ? categoryFilter : 'lekh')">+ नया पोस्ट</button>
+      </div>
+    </div>
+
+    <div class="skeletonList" *ngIf="loading">
+      <div class="skeleton" *ngFor="let _ of [1, 2, 3, 4]"></div>
+    </div>
+
+    <div class="articleList" *ngIf="!loading && articles.length">
+      <button
+        type="button"
+        class="articleCard"
+        *ngFor="let a of articles"
+        [class.articleCard--active]="editingId === a.id"
+        (click)="edit(a)"
+      >
+        <div class="articleCard__main">
+          <div class="articleCard__title">{{ a.title }}</div>
+          <div class="articleCard__meta">
+            <span class="badge" [class.badge--pub]="a.status === 'published'" [class.badge--draft]="a.status === 'draft'">
+              {{ a.status === 'published' ? 'प्रकाशित' : 'ड्राफ्ट' }}
+            </span>
+            <span>{{ categoryName(a.category_slug) }}</span>
+            <span>{{ a.updated_at | date: 'd MMM y' }}</span>
+          </div>
+        </div>
+        <div class="articleCard__actions" (click)="$event.stopPropagation()">
+          <a class="btn btn--ghost btn--sm" *ngIf="a.status === 'published'" [routerLink]="['/article', a.slug]" target="_blank">देखें</a>
+          <button class="btn btn--danger btn--sm" type="button" (click)="remove(a)">हटाएँ</button>
+        </div>
+      </button>
+    </div>
+
+    <div class="emptyState" *ngIf="!loading && !articles.length">
+      <div class="emptyState__icon">📝</div>
+      <p><strong>कोई पोस्ट नहीं</strong></p>
+      <p class="muted">दाईं ओर फॉर्म भरकर पहला पोस्ट बनाएँ</p>
+      <button class="btn btn--mag" type="button" (click)="newArticle()">+ नया पोस्ट</button>
+    </div>
+  </section>
+
+  <section class="panel panel--sticky editorPanel">
+    <div class="editorHead">
+      <h2>{{ editingId ? 'पोस्ट संपादित करें' : 'नया पोस्ट' }}</h2>
+      <span class="editorBadge" *ngIf="editingId">संपादन</span>
+    </div>
+
+    <div class="formSection">
+      <div class="formSection__title">मूल जानकारी</div>
+      <label class="field">
+        <span>शीर्षक *</span>
+        <input [(ngModel)]="form.title" placeholder="पोस्ट का शीर्षक" required />
+      </label>
+      <div class="formGrid">
+        <label class="field">
+          <span>श्रेणी</span>
+          <select [(ngModel)]="form.category_slug">
+            <option *ngFor="let c of categories" [value]="c.slug">{{ c.label }}</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>भाषा</span>
+          <select [(ngModel)]="form.language">
+            <option value="hi">हिन्दी</option>
+            <option value="en">English</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>स्थिति</span>
+          <select [(ngModel)]="form.status">
+            <option value="draft">ड्राफ्ट</option>
+            <option value="published">प्रकाशित</option>
+          </select>
+        </label>
+        <label class="field">
+          <span>स्लग (वैकल्पिक)</span>
+          <input [(ngModel)]="form.slug" placeholder="खाली छोड़ें — शीर्षक से बनेगा" />
+        </label>
+      </div>
+    </div>
+
+    <div class="formSection">
+      <div class="formSection__title">कवर चित्र</div>
+      <label class="uploadZone">
+        <input type="file" accept="image/*" (change)="onCoverUpload($event)" />
+        {{ uploadingCover ? 'अपलोड हो रहा है…' : '↑ चित्र अपलोड करें' }}
+      </label>
+      <img class="coverThumb" *ngIf="form.cover_url" [src]="coverPreview(form.cover_url)" alt="" />
+    </div>
+
+    <div class="formSection">
+      <div class="formSection__title">सामग्री</div>
+      <label class="field">
+        <span>संक्षिप्त विवरण</span>
+        <textarea [(ngModel)]="form.excerpt" rows="3" placeholder="२–३ पंक्तियाँ…"></textarea>
+      </label>
+      <label class="field">
+        <span>पूरा लेख</span>
+        <textarea [(ngModel)]="form.content" rows="10" placeholder="पूरा लेख यहाँ लिखें…"></textarea>
+      </label>
+    </div>
+
+    <div class="editorFoot">
+      <button class="btn btn--mag" type="button" (click)="save()" [disabled]="saving || !form.title.trim()">
+        {{ saving ? 'सेव हो रहा है…' : editingId ? 'अपडेट करें' : 'पोस्ट बनाएँ' }}
+      </button>
+      <button class="btn btn--ghost" type="button" (click)="newArticle()">फॉर्म साफ करें</button>
+    </div>
+  </section>
+</div>

@@ -1,0 +1,161 @@
+<section class="page" *ngIf="site() as s">
+  <header class="hero" (mouseenter)="pauseAuto()" (mouseleave)="resumeAuto()">
+    <ng-container *ngFor="let slide of heroSlides(); let i = index">
+      <a
+        *ngIf="slide.link && isExternalLink(slide.link); else internalSlide"
+        class="hero__slide hero__slide--link"
+        [class.isActive]="activeSlide() === i"
+        [href]="slide.link"
+        target="_blank"
+        rel="noopener noreferrer"
+        [attr.aria-label]="slide.title || 'स्लाइड ' + (i + 1)"
+      >
+        <img class="hero__img" *ngIf="slide.imageUrl" [src]="slide.imageUrl" [alt]="slide.title || ''" />
+        <div class="hero__shade"></div>
+        <div class="hero__caption" *ngIf="slide.category_label || slide.title">
+          <span class="hero__cat" *ngIf="slide.category_label">{{ slide.category_label }}</span>
+          <h2 class="hero__title" *ngIf="slide.title">{{ slide.title }}</h2>
+        </div>
+      </a>
+      <ng-template #internalSlide>
+        <a
+          class="hero__slide hero__slide--link"
+          [class.isActive]="activeSlide() === i"
+          [routerLink]="slideRouterLink(slide.link)"
+          [attr.aria-label]="slide.title || 'स्लाइड ' + (i + 1)"
+        >
+          <img class="hero__img" *ngIf="slide.imageUrl" [src]="slide.imageUrl" [alt]="slide.title || ''" />
+          <div class="hero__shade"></div>
+          <div class="hero__caption" *ngIf="slide.category_label || slide.title">
+            <span class="hero__cat" *ngIf="slide.category_label">{{ slide.category_label }}</span>
+            <h2 class="hero__title" *ngIf="slide.title">{{ slide.title }}</h2>
+          </div>
+        </a>
+      </ng-template>
+    </ng-container>
+
+    <button class="hero__nav hero__nav--prev" type="button" (click)="prev(); $event.preventDefault()" aria-label="पिछला">‹</button>
+    <button class="hero__nav hero__nav--next" type="button" (click)="next(); $event.preventDefault()" aria-label="अगला">›</button>
+
+    <div class="hero__dots" *ngIf="slideCount() > 1">
+      <button
+        class="hero__dot"
+        type="button"
+        *ngFor="let slide of heroSlides(); let i = index"
+        [class.isActive]="activeSlide() === i"
+        (click)="goTo(i)"
+        [attr.aria-label]="'स्लाइड ' + (i + 1)"
+      ></button>
+    </div>
+  </header>
+
+  <div class="content">
+    <section class="homeSection" *ngIf="newsCards().length">
+      <header class="sectionHead">
+        <div>
+          <p class="sectionHead__label">समाचार</p>
+          <h2 class="sectionHead__title">आज की खबरें</h2>
+          <p class="sectionHead__sub">Daily News · हिंदी समाचार</p>
+        </div>
+        <a class="sectionHead__link" *ngIf="showSeeAllNews()" routerLink="/category/lekh">सभी समाचार →</a>
+      </header>
+      <div class="cardGrid cardGrid--oneRow cardGrid--news">
+        <a class="magCard magCard--news" *ngFor="let c of newsCards()" [routerLink]="c.link">
+          <div class="magCard__img magCard__img--top">
+            <img
+              class="magCard__imgEl"
+              [src]="cardImage(c)"
+              [alt]="c.title"
+              loading="lazy"
+              (error)="onCardImgError($event, c)"
+            />
+            <span class="magCard__badge">समाचार</span>
+          </div>
+          <h3 class="magCard__title">{{ c.title }}</h3>
+          <p class="magCard__excerpt">{{ c.excerpt }}</p>
+          <span class="magCard__more">और पढ़ें »</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="homeSection">
+      <header class="sectionHead">
+        <div>
+          <p class="sectionHead__label">चुनिंदा</p>
+          <h2 class="sectionHead__title">नई रचनाएँ</h2>
+          <p class="sectionHead__sub">कहानियाँ · Love Story</p>
+        </div>
+        <a class="sectionHead__link" *ngIf="showSeeAll()" [routerLink]="seeAllLink()">सभी देखें →</a>
+      </header>
+      <div class="cardGrid cardGrid--oneRow">
+        <a class="magCard" *ngFor="let c of gridCards()" [routerLink]="c.link">
+          <div class="magCard__img magCard__img--top">
+            <img
+              class="magCard__imgEl"
+              [src]="cardImage(c)"
+              [alt]="c.title"
+              loading="lazy"
+              (error)="onCardImgError($event, c)"
+            />
+          </div>
+          <h3 class="magCard__title">{{ c.title }}</h3>
+          <p class="magCard__excerpt">{{ c.excerpt }}</p>
+          <span class="magCard__more">और पढ़ें »</span>
+        </a>
+      </div>
+    </section>
+
+    <section class="newsletterBand" aria-labelledby="newsletter-title">
+      <div class="newsletterBand__inner">
+        <div class="newsletterBand__text">
+          <p class="newsletterBand__label">न्यूज़लेटर</p>
+          <h2 class="newsletterBand__title" id="newsletter-title">{{ s.bottom_newsletter_title }}</h2>
+          <p class="newsletterBand__desc">{{ s.bottom_newsletter_text }}</p>
+        </div>
+        <form class="newsletterForm" (submit)="onNewsletterSubmit($event)">
+          <label class="sr-only" for="newsletter-email">ईमेल</label>
+          <input
+            id="newsletter-email"
+            class="newsletterForm__input"
+            type="email"
+            [(ngModel)]="newsletterEmail"
+            name="email"
+            placeholder="आपका ईमेल पता"
+            autocomplete="email"
+          />
+          <button class="newsletterForm__btn btnMag" type="submit" [disabled]="newsletterSending">
+            {{ newsletterSent ? 'धन्यवाद!' : 'सब्सक्राइब करें' }}
+          </button>
+          <p class="newsletterForm__note" *ngIf="newsletterMessage">{{ newsletterMessage }}</p>
+        </form>
+      </div>
+    </section>
+
+    <section class="homeSection homeSection--last">
+      <div class="bottomRow">
+        <article class="bottomBox">
+          <h3 class="bottomBox__title">{{ s.bottom_archive_title }}</h3>
+          <div class="bottomBox__img"></div>
+          <p class="introBox__text">{{ s.bottom_archive_text }}</p>
+          <a class="btnMag" routerLink="/archive">और पढ़ें</a>
+        </article>
+
+        <article class="bottomBox">
+          <h3 class="bottomBox__title">{{ s.bottom_social_title }}</h3>
+          <p class="introBox__text">{{ s.bottom_social_text }}</p>
+          <div class="socialBig">
+            <a class="social--fb" href="https://www.facebook.com/meri.niharika.1" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+              <svg viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 22v-7h2.4l.4-3H13.5V9.7c0-.86.24-1.45 1.48-1.45h1.58V5.52A21.5 21.5 0 0 0 14.3 5.4c-2.25 0-3.8 1.37-3.8 3.88V12H8.2v3h2.3v7h3Z"/></svg>
+            </a>
+            <a class="social--ig" href="https://www.instagram.com/meriniharika8/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+              <svg viewBox="0 0 24 24"><path fill="currentColor" d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4A5.8 5.8 0 0 1 16.2 22H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4A3.8 3.8 0 0 0 20 16.2V7.8A3.8 3.8 0 0 0 16.2 4H7.8Zm10.55 1.9a.85.85 0 1 1 0 1.7.85.85 0 0 1 0-1.7ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
+            </a>
+            <a class="social--yt" href="https://www.youtube.com/@meriniharika" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+              <svg viewBox="0 0 24 24"><path fill="currentColor" d="M21.6 7.1a2.7 2.7 0 0 0-1.9-1.9C18 4.7 12 4.7 12 4.7s-6 0-7.7.5a2.7 2.7 0 0 0-1.9 1.9A28.2 28.2 0 0 0 2 12a28.2 28.2 0 0 0 .4 4.9 2.7 2.7 0 0 0 1.9 1.9c1.7.5 7.7.5 7.7.5s6 0 7.7-.5a2.7 2.7 0 0 0 1.9-1.9A28.2 28.2 0 0 0 22 12a28.2 28.2 0 0 0-.4-4.9ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+            </a>
+          </div>
+        </article>
+      </div>
+    </section>
+  </div>
+</section>

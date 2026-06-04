@@ -1,0 +1,143 @@
+<section class="articlePage articlePage--loading" *ngIf="loading">
+  <div class="articleWrap">
+    <p class="muted">लोड हो रहा है…</p>
+  </div>
+</section>
+
+<section class="articlePage" *ngIf="!loading && notFound">
+  <div class="articleWrap articleWrap--narrow">
+    <h1 class="articlePage__title">लेख नहीं मिला</h1>
+    <p class="muted">यह कहानी उपलब्ध नहीं है।</p>
+    <a class="btnMag" routerLink="/category/love-story">Love Story पर वापस जाएँ</a>
+  </div>
+</section>
+
+<section class="articlePage" *ngIf="!loading && article as a">
+  <div class="articleWrap">
+    <nav class="crumbs" aria-label="ब्रेडक्रंब">
+      <a routerLink="/">मुखपृष्ठ</a>
+      <span>/</span>
+      <a *ngIf="a.category_slug" [routerLink]="['/category', a.category_slug]">
+        {{ categoryTitle(a.category_slug) }}
+      </a>
+      <span>/</span>
+      <span class="crumbs__cur">{{ a.title }}</span>
+    </nav>
+
+    <div class="readerLayout">
+      <article class="readerMain">
+        <p class="readerCat">{{ categoryTitle(a.category_slug) }}</p>
+        <p class="readerSeries" *ngIf="a.series_slug && partLabel(a)">{{ a.series_title || a.title }} · {{ partLabel(a) }}</p>
+        <h1 class="readerTitle">{{ a.title }}</h1>
+        <p class="readerMeta">
+          <span class="readerMeta__author">{{ authorName(a) }}</span>
+          <span class="dot" *ngIf="a.published_at">·</span>
+          <span *ngIf="a.published_at">{{ a.published_at | date: 'd MMMM y' }}</span>
+        </p>
+
+        <figure class="readerCover" *ngIf="a.cover_url">
+          <img [src]="assetFull(a.cover_url)" [alt]="a.title" />
+        </figure>
+
+        <p class="readerLead" *ngIf="a.excerpt">{{ a.excerpt }}</p>
+
+        <div class="readerBody">
+          <p class="readerPara" *ngFor="let para of paragraphs">{{ para }}</p>
+          <p class="muted" *ngIf="!paragraphs.length">सामग्री जल्द उपलब्ध होगी।</p>
+        </div>
+
+        <nav class="readerPartsNav" *ngIf="seriesParts.length > 1" aria-label="कहानी के भाग">
+          <a
+            class="readerPartsNav__btn"
+            *ngIf="prevPart"
+            [routerLink]="['/article', prevPart.slug]"
+          >← पिछला भाग</a>
+          <span class="readerPartsNav__mid" *ngIf="partLabel(a)">{{ partLabel(a) }}</span>
+          <a
+            class="readerPartsNav__btn readerPartsNav__btn--next"
+            *ngIf="nextPart"
+            [routerLink]="['/article', nextPart.slug]"
+          >अगला भाग →</a>
+        </nav>
+
+        <div class="readerTags" *ngIf="a.tags?.length">
+          <span class="readerTag" *ngFor="let t of a.tags">{{ t }}</span>
+        </div>
+
+        <p class="readerMoreLink">
+          <a [routerLink]="['/category', a.category_slug === 'love-story' ? 'love-story' : 'kahani']">
+            और कहानियां पढ़ने के लिए क्लिक करें…
+          </a>
+        </p>
+      </article>
+
+      <aside class="readerSide" *ngIf="seriesParts.length > 1 || related.length">
+        <div class="readerSide__panel">
+          <h3 class="readerSide__title">{{ seriesParts.length > 1 ? 'सभी भाग' : 'और कहानियाँ' }}</h3>
+
+          <ng-container *ngIf="seriesParts.length > 1; else otherStories">
+            <p class="readerSide__meta">{{ partsRangeLabel }}</p>
+            <a
+              class="sideCard"
+              *ngFor="let r of pagedSeriesParts"
+              [routerLink]="['/article', r.slug]"
+              [class.sideCard--active]="r.slug === a.slug"
+            >
+              <img
+                class="sideCard__img"
+                [src]="partCover(r)"
+                [alt]="'भाग ' + r.part_number"
+                loading="lazy"
+                (error)="onPartCoverError($event, r)"
+              />
+              <div class="sideCard__body">
+                <span class="sideCard__cat">भाग {{ r.part_number }}</span>
+                <div class="sideCard__title">भाग {{ r.part_number }}</div>
+              </div>
+            </a>
+
+            <nav class="partsPagination" *ngIf="totalPartsPages > 1" aria-label="भाग पृष्ठ">
+              <button
+                type="button"
+                class="partsPagination__btn"
+                (click)="goPartsPage(partsPage - 1)"
+                [disabled]="partsPage <= 1"
+              >
+                ‹ पिछला
+              </button>
+              <span class="partsPagination__info">पृष्ठ {{ partsPage }} / {{ totalPartsPages }}</span>
+              <button
+                type="button"
+                class="partsPagination__btn"
+                (click)="goPartsPage(partsPage + 1)"
+                [disabled]="partsPage >= totalPartsPages"
+              >
+                अगला ›
+              </button>
+            </nav>
+          </ng-container>
+
+          <ng-template #otherStories>
+            <a
+              class="sideCard"
+              *ngFor="let r of related"
+              [routerLink]="['/article', r.slug]"
+            >
+              <img
+                class="sideCard__img"
+                *ngIf="r.cover_url"
+                [src]="assetFull(r.cover_url)"
+                [alt]="r.title"
+              />
+              <div class="sideCard__ph" *ngIf="!r.cover_url">क</div>
+              <div class="sideCard__body">
+                <span class="sideCard__cat">{{ storyTag(r) }}</span>
+                <div class="sideCard__title">{{ r.title }}</div>
+              </div>
+            </a>
+          </ng-template>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,65 @@
+<div class="pageHead">
+  <h1>डैशबोर्ड</h1>
+  <p>साइट का संक्षिप्त विवरण</p>
+</div>
+
+<div class="pageGuide">
+  <strong>त्वरित मार्गदर्शन:</strong>
+  <ol>
+    <li><strong>मुखपृष्ठ</strong> — स्लाइडर, टैगलाइन, बॉक्स संपादित करें</li>
+    <li><strong>लेख / पोस्ट</strong> — कविता, लेख, स्वास्थ्य आदि श्रेणियों में पोस्ट जोड़ें</li>
+    <li><strong>अंक / PDF</strong> — ई-मैगज़ीन PDF अपलोड और प्रकाशित करें</li>
+    <li><strong>उपयोगकर्ता</strong> — नए admin खाते बनाएँ</li>
+  </ol>
+</div>
+
+<div class="pageToolbar">
+  <button class="btn btn--ghost" type="button" (click)="reload()" [disabled]="loading">↻ रिफ्रेश</button>
+  <a class="btn btn--ghost" href="/" target="_blank" rel="noopener">साइट देखें ↗</a>
+</div>
+
+<p class="alert alert--err" *ngIf="error">{{ error }}</p>
+<p class="alert alert--ok" *ngIf="warn && !error">{{ warn }}</p>
+
+<div class="skeletonList dashSkeleton" *ngIf="loading">
+  <div class="skeleton" *ngFor="let _ of [1, 2, 3, 4, 5, 6]"></div>
+</div>
+
+<div class="stats" *ngIf="!loading">
+  <div class="statCard">
+    <div class="statCard__label">कुल पोस्ट</div>
+    <div class="statCard__value">{{ stats.articles_total }}</div>
+  </div>
+  <div class="statCard">
+    <div class="statCard__label">प्रकाशित</div>
+    <div class="statCard__value">{{ stats.articles_published }}</div>
+  </div>
+  <div class="statCard">
+    <div class="statCard__label">ड्राफ्ट</div>
+    <div class="statCard__value">{{ stats.articles_draft }}</div>
+  </div>
+  <div class="statCard">
+    <div class="statCard__label">PDF अंक</div>
+    <div class="statCard__value">{{ stats.archive_total }}</div>
+  </div>
+  <div class="statCard">
+    <div class="statCard__label">उपयोगकर्ता</div>
+    <div class="statCard__value">{{ stats.users_total }}</div>
+  </div>
+  <div class="statCard">
+    <div class="statCard__label">श्रेणियाँ</div>
+    <div class="statCard__value">{{ stats.categories_total }}</div>
+  </div>
+</div>
+
+<section class="panel" *ngIf="!loading">
+  <h2>त्वरित क्रियाएँ</h2>
+  <div class="quickLinks">
+    <a class="quickLink" routerLink="/admin/site">⌂ मुखपृष्ठ संपादित करें</a>
+    <a class="quickLink" routerLink="/admin/articles">✎ नया पोस्ट</a>
+    <a class="quickLink" routerLink="/admin/archive">📄 PDF अपलोड</a>
+    <a class="quickLink" routerLink="/admin/users">👤 उपयोगकर्ता</a>
+    <a class="quickLink" href="/" target="_blank">↗ सार्वजनिक साइट</a>
+    <a class="quickLink" routerLink="/archive" target="_blank">↗ पुराने अंक</a>
+  </div>
+</section>

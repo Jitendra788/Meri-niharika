@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ff6b9d"/>
+      <stop offset="55%" stop-color="#c44569"/>
+      <stop offset="100%" stop-color="#ffeef4"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.45"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="soft" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="8"/>
+    </filter>
+  </defs>
+  <rect width="800" height="500" fill="url(#bg)"/>
+  <ellipse cx="400" cy="180" rx="280" ry="160" fill="url(#glow)"/>
+  <circle cx="120" cy="80" r="42" fill="#ffffff" fill-opacity="0.25" filter="url(#soft)"/>
+  <circle cx="210" cy="110" r="28" fill="#ffffff" fill-opacity="0.18"/>
+  <g transform="translate(400 320)" fill="#ffffff" fill-opacity="0.92">
+    <path d="M0,-18 C-22,-42 -52,-28 -52,2 C-52,28 -18,48 0,62 C18,48 52,28 52,2 C52,-28 22,-42 0,-18 Z"/>
+  </g>
+  <g transform="translate(320 355) scale(0.7)" fill="#ffffff" fill-opacity="0.55">
+    <path d="M0,-14 C-16,-32 -38,-22 -38,2 C-38,22 -14,36 0,48 C14,36 38,22 38,2 C38,-22 16,-32 0,-14 Z"/>
+  </g>
+  <g transform="translate(500 340) scale(0.85)" fill="#ffffff" fill-opacity="0.65">
+    <path d="M0,-16 C-18,-36 -44,-24 -44,0 C-44,24 -16,42 0,56 C16,42 44,24 44,0 C44,-24 18,-36 0,-16 Z"/>
+  </g>
+  <g transform="translate(400 400)" stroke="#ffffff" stroke-opacity="0.75" stroke-width="3" fill="none" stroke-linecap="round">
+    <path d="M-55,0 Q-28,-28 0,0 Q28,28 55,0"/>
+    <circle cx="-62" cy="2" r="9" fill="#ffffff" fill-opacity="0.8" stroke="none"/>
+    <circle cx="62" cy="2" r="9" fill="#ffffff" fill-opacity="0.8" stroke="none"/>
+  </g>
+  <text x="400" y="468" text-anchor="middle" font-family="Georgia, 'Noto Serif Devanagari', serif" font-size="22" fill="#ffffff" fill-opacity="0.9" letter-spacing="2">Love Story</text>
+</svg>

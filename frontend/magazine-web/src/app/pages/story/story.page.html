@@ -1,0 +1,116 @@
+<!-- Loading -->
+<section class="gsPage gsPage--loading" *ngIf="loading">
+  <div class="gsWrap">
+    <div class="skel skel--cat"></div>
+    <div class="skel skel--title"></div>
+    <div class="gsGrid">
+      <div>
+        <div class="skel skel--deck"></div>
+        <div class="skel skel--line" *ngFor="let _ of skeletonLines"></div>
+      </div>
+      <div class="skel skel--side" *ngFor="let _ of skeletonSides"></div>
+    </div>
+  </div>
+</section>
+
+<!-- Not found -->
+<section class="gsPage" *ngIf="!loading && !issue">
+  <div class="gsWrap gsWrap--narrow">
+    <p class="gsAlert" *ngIf="loadError">{{ loadError }}</p>
+    <a class="gsBtn" routerLink="/category/kahani">कहानी पर वापस जाएँ</a>
+  </div>
+</section>
+
+<!-- Grihshobha-style reader -->
+<section class="gsPage" *ngIf="!loading && issue as item">
+  <div class="gsWrap">
+    <nav class="gsCrumbs" aria-label="ब्रेडक्रंब">
+      <a routerLink="/">मुखपृष्ठ</a>
+      <span>/</span>
+      <a routerLink="/category/kahani">कहानी</a>
+      <span>/</span>
+      <span class="gsCrumbs__cur">{{ item.title }}</span>
+    </nav>
+
+    <div class="gsGrid">
+      <article class="gsArticle">
+        <p class="gsCat">कहानी</p>
+        <h1 class="gsTitle">{{ item.title }}</h1>
+
+        <p class="gsDeck" *ngIf="leadText(item)">{{ leadText(item) }}</p>
+
+        <ul class="gsByline">
+          <li>{{ item.author || 'Ishqora' }}</li>
+          <li *ngIf="item.published_at">{{ item.published_at | date: 'd MMMM y' }}</li>
+        </ul>
+
+        <figure class="gsCover" *ngIf="coverImage(item)">
+          <img
+            [src]="coverImage(item)"
+            [alt]="item.title + ' — कवर'"
+            loading="eager"
+          />
+        </figure>
+
+        <div class="gsShare">
+          <span class="gsShare__label">शेयर</span>
+          <a class="gsShare__icon gsShare__icon--fb" [href]="facebookShareUrl()" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 22v-7h2.4l.4-3H13.5V9.7c0-.86.24-1.45 1.48-1.45h1.58V5.52A21.5 21.5 0 0 0 14.3 5.4c-2.25 0-3.8 1.37-3.8 3.88V12H8.2v3h2.3v7h3Z"/></svg>
+          </a>
+          <a class="gsShare__icon gsShare__icon--wa" [href]="whatsappShareUrl(item)" target="_blank" rel="noopener noreferrer" aria-label="WhatsApp">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2C6.58 2 2.13 6.45 2.13 11.91c0 2.09.6 4.03 1.64 5.66L2 22l4.58-1.72a9.86 9.86 0 0 0 5.46 1.64h.01c5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2Zm5.97 14.22c-.25.7-1.45 1.34-2 1.41-.51.07-1.18.1-1.9-.12-.44-.14-1-.46-1.72-.9-3.03-1.78-5-5.94-5.15-6.22-.14-.28-1.23-1.64-1.23-3.13 0-1.49.78-2.22 1.06-2.52.28-.3.61-.38.81-.38.2 0 .41 0 .59.01.19.01.44-.07.69.53.25.59.85 2.08.92 2.23.08.15.13.33.02.53-.1.2-.16.33-.32.51-.16.18-.34.4-.48.54-.16.16-.33.33-.14.65.19.32.84 1.39 1.81 2.25 1.24 1.11 2.29 1.46 2.61 1.62.32.16.51.14.69-.08.18-.22.79-.92 1-1.24.21-.32.42-.27.71-.16.29.11 1.83.86 2.14 1.02.32.16.53.24.61.37.08.13.08.76-.17 1.46Z"/></svg>
+          </a>
+          <button class="gsShare__icon gsShare__icon--ig" type="button" (click)="shareInstagram(item)" aria-label="Instagram">
+            <svg viewBox="0 0 24 24"><path fill="currentColor" d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4A5.8 5.8 0 0 1 16.2 22H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4A3.8 3.8 0 0 0 20 16.2V7.8A3.8 3.8 0 0 0 16.2 4H7.8Zm10.55 1.9a.85.85 0 1 1 0 1.7.85.85 0 0 1 0-1.7ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
+          </button>
+        </div>
+
+        <div class="gsBody" *ngIf="paragraphs.length">
+          <p class="gsPara" *ngFor="let para of paragraphs; let i = index">
+            <strong class="gsPara__kicker" *ngIf="i === 0 && bodyKicker()">{{ bodyKicker() }}</strong>
+            {{ para }}
+          </p>
+        </div>
+
+        <p class="gsEmpty" *ngIf="!paragraphs.length">पाठ लोड नहीं हुआ। पेज रिफ्रेश करें।</p>
+
+        <div class="gsMore" *ngIf="pageHasMore">
+          <button class="gsBtn" type="button" (click)="loadMore()" [disabled]="loadingMore">
+            {{ loadingMore ? 'लोड हो रहा है…' : 'और पढ़ें' }}
+          </button>
+        </div>
+
+        <p class="gsEndLink">
+          <a routerLink="/category/kahani">और कहानियां पढ़ने के लिए क्लिक करें…</a>
+        </p>
+      </article>
+
+      <aside class="gsAside" *ngIf="relatedItems(item).length">
+        <div class="gsAside__panel">
+        <h2 class="gsAside__heading">और कहानियाँ</h2>
+        <a class="gsAsideCard" *ngFor="let r of relatedItems(item)" [routerLink]="storyLink(r)">
+          <img
+            class="gsAsideCard__img"
+            *ngIf="sidebarCover(r) && !brokenCovers.has(r.id)"
+            [src]="sidebarCover(r)"
+            [alt]="r.title"
+            loading="lazy"
+            (error)="onCoverError(r.id)"
+          />
+          <div class="gsAsideCard__ph" *ngIf="!sidebarCover(r) || brokenCovers.has(r.id)">क</div>
+          <div class="gsAsideCard__text">
+            <span class="gsAsideCard__tag">कहानी</span>
+            <span class="gsAsideCard__title">{{ r.title }}</span>
+          </div>
+        </a>
+
+        <div class="gsPromo">
+          <p class="gsPromo__title">Ishqora सब्सक्राइब करें</p>
+          <p class="gsPromo__text">मनोरंजक कहानियों और महिलाओं से जुड़ी हर नई खबर के लिए</p>
+          <a class="gsPromo__btn" routerLink="/category/kahani">और पढ़ें</a>
+        </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+</section>

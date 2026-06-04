@@ -1,0 +1,30 @@
+# Render Blueprint — Ishqora API (FastAPI)
+# Deploy: https://dashboard.render.com → New → Blueprint → connect GitHub repo
+# After deploy: set DATABASE_URL (Neon) and ALLOWED_ORIGINS (Vercel URL) in dashboard
+
+services:
+  - type: web
+    name: ishqora-api
+    runtime: python
+    plan: free
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn app.main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /api/health
+    envVars:
+      - key: PYTHON_VERSION
+        value: "3.12.8"
+      - key: UPLOADS_DIR
+        value: uploads
+      - key: JWT_SECRET
+        generateValue: true
+      - key: ADMIN_KEY
+        generateValue: true
+      - key: ADMIN_PASSWORD
+        generateValue: true
+      - key: ADMIN_USERNAME
+        value: admin
+      - key: ALLOWED_ORIGINS
+        value: http://localhost:4200,https://localhost:4200
+      - key: DATABASE_URL
+        sync: false

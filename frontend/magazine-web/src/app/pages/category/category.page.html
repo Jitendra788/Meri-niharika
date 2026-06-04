@@ -1,0 +1,75 @@
+<app-page-shell
+  [title]="categoryTitle"
+  [subtitle]="categorySlug === 'kahani' ? 'भावनात्मक कहानियाँ और ई-मैगज़ीन अंक' : (categorySlug === 'love-story' ? 'प्रेम कहानियाँ | Love Story in Hindi | Romantic Story in Hindi' : '')"
+>
+  <div class="catPage">
+    <p class="catPage__intro" *ngIf="categoryIntro">{{ categoryIntro }}</p>
+
+    <p class="catPage__loading" *ngIf="loading">लोड हो रहा है…</p>
+
+    <p class="catPage__empty" *ngIf="!loading && !items.length">
+      अभी इस श्रेणी में कोई कहानी नहीं है। Admin → Articles से प्रकाशित लेख जोड़ें।
+    </p>
+
+    <div class="catPage__bar" *ngIf="!loading && items.length">
+      <span class="catPage__count">{{ items.length }} कहानियाँ</span>
+      <span class="catPage__hint" *ngIf="totalListPages > 1">पृष्ठ {{ listPage }} / {{ totalListPages }} · {{ listRangeLabel }}</span>
+      <span class="catPage__hint" *ngIf="totalListPages <= 1">नई कहानियाँ पढ़ने के लिए कार्ड पर क्लिक करें</span>
+    </div>
+
+    <div class="storyGrid" *ngIf="!loading && items.length">
+      <article class="storyCard" *ngFor="let item of pagedItems">
+        <a class="storyCard__link" [routerLink]="item.link">
+          <div class="storyCard__media">
+            <img
+              class="storyCard__img"
+              [src]="cardImage(item)"
+              [alt]="item.title"
+              loading="lazy"
+              (error)="onCoverError($event, item)"
+            />
+            <ng-template #noImg>
+              <div class="storyCard__placeholder" [class.storyCard__placeholder--love]="categorySlug === 'love-story'">
+                <span>{{ categorySlug === 'love-story' ? '♥ Love Story' : 'कहानी' }}</span>
+              </div>
+            </ng-template>
+            <span class="storyCard__parts" *ngIf="item.parts">{{ item.parts }}</span>
+            <span class="storyCard__badge">{{ item.tag || 'कहानी' }}</span>
+          </div>
+          <div class="storyCard__body">
+            <h2 class="storyCard__title">{{ item.title }}</h2>
+            <p class="storyCard__excerpt" *ngIf="item.excerpt">{{ item.excerpt }}</p>
+            <p class="storyCard__meta">
+              <span *ngIf="item.author">{{ item.author }}</span>
+              <span class="dot" *ngIf="item.author && item.readers">·</span>
+              <span *ngIf="item.readers" class="storyCard__readers">{{ item.readers }}</span>
+              <span class="dot" *ngIf="item.published_at && (item.author || item.readers)">·</span>
+              <span *ngIf="item.published_at">{{ item.published_at | date: 'd MMM y' }}</span>
+            </p>
+            <span class="storyCard__more">और पढ़ें</span>
+          </div>
+        </a>
+      </article>
+    </div>
+
+    <nav class="catPagination" *ngIf="!loading && totalListPages > 1" aria-label="कहानियाँ पृष्ठ">
+      <button
+        type="button"
+        class="catPagination__btn"
+        (click)="goListPage(listPage - 1)"
+        [disabled]="listPage <= 1"
+      >
+        ‹ पिछला
+      </button>
+      <span class="catPagination__info">पृष्ठ {{ listPage }} / {{ totalListPages }}</span>
+      <button
+        type="button"
+        class="catPagination__btn"
+        (click)="goListPage(listPage + 1)"
+        [disabled]="listPage >= totalListPages"
+      >
+        अगला ›
+      </button>
+    </nav>
+  </div>
+</app-page-shell>

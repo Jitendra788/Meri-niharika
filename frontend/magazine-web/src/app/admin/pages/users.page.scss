@@ -1,0 +1,18 @@
+.usersLayout {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 1rem;
+  align-items: start;
+}
+
+.hint {
+  margin-top: 0.75rem;
+  color: #888;
+  font-size: 0.85rem;
+}
+
+@media (max-width: 900px) {
+  .usersLayout {
+    grid-template-columns: 1fr;
+  }
+}

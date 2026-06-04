@@ -1,0 +1,165 @@
+<div class="pageHead">
+  <h1>मुखपृष्ठ</h1>
+  <p>स्लाइडर, टैगलाइन, परिचय बॉक्स — सार्वजनिक साइट का मुखपृष्ठ</p>
+</div>
+
+<div class="pageGuide">
+  <strong>कैसे करें:</strong>
+  <ol>
+    <li>स्लाइडर चित्र और टैगलाइन बदलें</li>
+    <li>संपादक की बात / खत लिख दो बॉक्स भरें</li>
+    <li>नीचे की 3 बॉक्स (अंक, न्यूज़लेटर, सोशल) संपादित करें</li>
+    <li><strong>मुखपृष्ठ सेव करें</strong> दबाएँ, फिर साइट पर Ctrl+F5 से रिफ्रेश करें</li>
+  </ol>
+</div>
+
+<div class="topBar">
+  <a class="btn btn--ghost" href="/" target="_blank" rel="noopener">साइट देखें ↗</a>
+  <button class="btn btn--ghost" type="button" (click)="reload()" [disabled]="loading">रिफ्रेश</button>
+  <button class="btn btn--mag" type="button" (click)="save()" [disabled]="saving || uploading || !canSave">
+    {{ saving ? 'सेव हो रहा है…' : 'मुखपृष्ठ सेव करें' }}
+  </button>
+</div>
+
+<p class="alert alert--err" *ngIf="error">{{ error }}</p>
+<p class="alert alert--ok" *ngIf="success">{{ success }}</p>
+<p class="loadingNote" *ngIf="loading">लोड हो रहा है…</p>
+
+<div class="siteEditor">
+  <section class="panel panel--preview">
+    <h2>पूर्वावलोकन</h2>
+    <div class="heroPreview">
+      <img
+        class="heroPreview__img"
+        *ngIf="activePreview()?.image"
+        [src]="previewUrl(activePreview()!.image)"
+        alt=""
+      />
+      <div class="heroPreview__caption" *ngIf="activePreview() as p">
+        <span class="heroPreview__cat" *ngIf="p.category_label">{{ p.category_label }}</span>
+        <p class="heroPreview__title" *ngIf="p.title">{{ p.title }}</p>
+        <p class="heroPreview__link muted" *ngIf="p.link">{{ p.link }}</p>
+      </div>
+      <div class="heroPreview__dots" *ngIf="slides.length > 1">
+        <button
+          type="button"
+          class="heroPreview__dot"
+          *ngFor="let s of slides; let i = index"
+          [class.isActive]="previewSlide === i"
+          (click)="previewSlide = i"
+        ></button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div class="panelHead">
+      <h2>हीरो स्लाइडर</h2>
+      <button class="btn btn--mag btn--sm" type="button" (click)="addSlide()">+ स्लाइड जोड़ें</button>
+    </div>
+
+    <p class="hint">
+      स्लाइडर चित्र पूरा दिखेगा (कटेगा नहीं) · लैंडस्केप 1200×500 सबसे अच्छा, पोर्ट्रेट/कवर भी चलेगा · श्रेणी, शीर्षक, लिंक
+    </p>
+
+    <div class="slideList">
+      <div class="slideRow" *ngFor="let slide of slides; let i = index">
+        <div class="slideRow__preview">
+          <img class="slideRow__img" *ngIf="slide.image" [src]="previewUrl(slide.image)" alt="" />
+          <span class="slideRow__cat" *ngIf="slide.category_label">{{ slide.category_label }}</span>
+        </div>
+        <div class="slideRow__body">
+          <div class="slideRow__top">
+            <strong>स्लाइड {{ i + 1 }}</strong>
+            <div class="btnRow">
+              <button class="btn btn--ghost btn--sm" type="button" (click)="previewSlide = i">देखें</button>
+              <button class="btn btn--ghost btn--sm" type="button" (click)="moveSlide(i, -1)" [disabled]="i === 0">↑</button>
+              <button class="btn btn--ghost btn--sm" type="button" (click)="moveSlide(i, 1)" [disabled]="i === slides.length - 1">↓</button>
+              <button class="btn btn--danger btn--sm" type="button" (click)="removeSlide(i)">हटाएँ</button>
+            </div>
+          </div>
+          <label class="field">
+            <span>चित्र URL</span>
+            <input [(ngModel)]="slide.image" placeholder="/uploads/images/..." />
+          </label>
+          <label class="uploadBtn">
+            <input type="file" accept="image/*" hidden (change)="onSlideFile($event, i)" />
+            {{ uploading && uploadTarget === 'slide-' + i ? 'अपलोड…' : 'चित्र अपलोड' }}
+          </label>
+          <label class="field">
+            <span>श्रेणी (जैसे फैशन, सोसायटी)</span>
+            <input [(ngModel)]="slide.category_label" placeholder="फैशन" />
+          </label>
+          <label class="field">
+            <span>शीर्षक</span>
+            <input [(ngModel)]="slide.title" placeholder="गर्मियों में सनग्लासेज…" />
+          </label>
+          <label class="field field--link">
+            <span>लिंक (क्लिक पर)</span>
+            <input [(ngModel)]="slide.link" placeholder="fashion/summer-sunglasses-tips या /article/slug" />
+          </label>
+        </div>
+      </div>
+    </div>
+    <p class="hint">
+      लिंक यहाँ manually भरें · उसी slug से <a routerLink="/admin/articles">लेख / पोस्ट</a> में लेख बनाएं ताकि क्लिक पर पेज खुले
+    </p>
+  </section>
+
+  <div class="twoCol">
+    <section class="panel">
+      <h2>संपादक की बात</h2>
+      <label class="field"><span>शीर्षक</span><input [(ngModel)]="form.intro_editorial_title" /></label>
+      <label class="field"><span>पाठ</span><textarea [(ngModel)]="form.intro_editorial_text" rows="4"></textarea></label>
+      <label class="field"><span>चित्र URL</span><input [(ngModel)]="form.intro_editorial_image" /></label>
+      <label class="uploadBtn">
+        <input type="file" accept="image/*" hidden (change)="onImage($event, 'intro_editorial_image')" />
+        {{ uploading && uploadTarget === 'intro_editorial_image' ? 'अपलोड…' : 'चित्र अपलोड' }}
+      </label>
+      <img class="thumb" *ngIf="form.intro_editorial_image" [src]="previewUrl(form.intro_editorial_image)" alt="" />
+    </section>
+
+    <section class="panel">
+      <h2>खत लिख दो</h2>
+      <label class="field"><span>शीर्षक</span><input [(ngModel)]="form.intro_letter_title" /></label>
+      <label class="field"><span>पाठ</span><textarea [(ngModel)]="form.intro_letter_text" rows="4"></textarea></label>
+      <label class="field"><span>चित्र URL</span><input [(ngModel)]="form.intro_letter_image" /></label>
+      <label class="uploadBtn">
+        <input type="file" accept="image/*" hidden (change)="onImage($event, 'intro_letter_image')" />
+        {{ uploading && uploadTarget === 'intro_letter_image' ? 'अपलोड…' : 'चित्र अपलोड' }}
+      </label>
+      <img class="thumb" *ngIf="form.intro_letter_image" [src]="previewUrl(form.intro_letter_image)" alt="" />
+    </section>
+  </div>
+
+  <section class="panel">
+    <h2>नीचे की 3 बॉक्स</h2>
+    <div class="formGrid">
+      <label class="field"><span>अंक — शीर्षक</span><input [(ngModel)]="form.bottom_archive_title" /></label>
+      <label class="field"><span>अंक — पाठ</span><input [(ngModel)]="form.bottom_archive_text" /></label>
+      <label class="field"><span>न्यूज़लेटर — शीर्षक</span><input [(ngModel)]="form.bottom_newsletter_title" /></label>
+      <label class="field"><span>न्यूज़लेटर — पाठ</span><input [(ngModel)]="form.bottom_newsletter_text" /></label>
+      <label class="field"><span>सोशल — शीर्षक</span><input [(ngModel)]="form.bottom_social_title" /></label>
+      <label class="field"><span>सोशल — पाठ</span><input [(ngModel)]="form.bottom_social_text" /></label>
+    </div>
+  </section>
+
+  <section class="panel">
+    <h2>संपादकीय पृष्ठ</h2>
+    <label class="field"><span>शीर्षक</span><input [(ngModel)]="form.editorial_page_title" /></label>
+    <label class="field"><span>पाठ</span><textarea [(ngModel)]="form.editorial_page_body" rows="6"></textarea></label>
+  </section>
+
+  <section class="panel panel--hint">
+    <p>
+      <strong>पोस्ट</strong> — <a routerLink="/admin/articles">लेख / पोस्ट</a> से प्रबंधित करें ·
+      <strong>PDF अंक</strong> — <a routerLink="/admin/archive">अंक / PDF</a> से
+    </p>
+  </section>
+</div>
+
+<div class="stickySave">
+  <button class="btn btn--mag" type="button" (click)="save()" [disabled]="saving || uploading || !canSave">
+    {{ saving ? 'सेव हो रहा है…' : 'मुखपृष्ठ सेव करें' }}
+  </button>
+</div>

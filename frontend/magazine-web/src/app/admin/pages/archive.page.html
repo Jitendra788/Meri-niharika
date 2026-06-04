@@ -1,0 +1,155 @@
+<div class="pageHead">
+  <h1>अंक / PDF</h1>
+  <p>ई-मैगज़ीन PDF अपलोड, श्रेणी में प्रकाशित, संपादित और हटाएँ</p>
+</div>
+
+<div class="pageGuide">
+  <strong>कैसे करें:</strong>
+  <ol>
+    <li><strong>चरण 1:</strong> PDF चुनें और <strong>PDF अपलोड</strong> दबाएँ</li>
+    <li><strong>चरण 2:</strong> शीर्षक + <strong>श्रेणी</strong> (कहानी / कविता…) चुनकर <strong>प्रकाशित करें</strong></li>
+    <li>नीचे सूची से पुराने अंक <strong>संपादित</strong> या <strong>हटाएँ</strong></li>
+  </ol>
+</div>
+
+<div class="archiveGrid">
+  <section class="panel">
+    <div class="step">चरण 1</div>
+    <h2>PDF अपलोड</h2>
+    <p class="hint">अधिकतम 50MB · केवल PDF</p>
+
+    <label class="dropzone" [class.dropzone--hasFile]="!!fileName">
+      <input type="file" accept="application/pdf" (change)="onFile($event)" hidden />
+      <span class="dropzone__icon">📄</span>
+      <span class="dropzone__name">{{ fileName || 'PDF चुनें' }}</span>
+      <span class="dropzone__hint" *ngIf="fileSizeLabel">आकार: {{ fileSizeLabel }}</span>
+    </label>
+
+    <div class="progress" *ngIf="uploading">
+      <div class="progress__track">
+        <div class="progress__fill" [style.width.%]="uploadPct"></div>
+      </div>
+      <span>{{ uploadStatus || uploadPct + '%' }}</span>
+    </div>
+
+    <button class="btn btn--primary" type="button" (click)="upload()" [disabled]="!file || uploading">
+      {{ uploading ? 'अपलोड हो रहा है…' : 'PDF अपलोड करें' }}
+    </button>
+  </section>
+
+  <section class="panel">
+    <div class="step">चरण 2</div>
+    <h2>प्रकाशित करें</h2>
+
+    <label class="field">
+      <span>शीर्षक</span>
+      <input [(ngModel)]="pubTitle" placeholder="मई 2026 अंक" />
+    </label>
+
+    <label class="field">
+      <span>श्रेणी</span>
+      <select [(ngModel)]="pubCategory">
+        <option *ngFor="let c of pdfCategories" [value]="c.slug">{{ c.label }}</option>
+      </select>
+    </label>
+
+    <label class="field">
+      <span>भाषा</span>
+      <select [(ngModel)]="pubLang">
+        <option value="hi">हिन्दी</option>
+        <option value="en">English</option>
+      </select>
+    </label>
+
+    <label class="field">
+      <span>कवर चित्र</span>
+      <input type="file" accept="image/jpeg,image/png,image/webp" (change)="onCover($event)" />
+    </label>
+
+    <div class="coverPreview" *ngIf="coverPreview || lastCoverUrl">
+      <img [src]="coverPreview || (apiBase + lastCoverUrl)" alt="Cover" />
+    </div>
+
+    <p class="pdfPreview" *ngIf="lastPdfUrl">
+      <a [href]="apiBase + lastPdfUrl" target="_blank" rel="noopener">{{ lastPdfUrl }}</a>
+    </p>
+
+    <p class="publishStatus" *ngIf="publishStatus">{{ publishStatus }}</p>
+
+    <div class="publishActions">
+      <button class="btn btn--mag" type="button" (click)="publish()" [disabled]="!lastPdfUrl || !pubTitle.trim() || publishing">
+        {{ publishing ? 'प्रकाशित हो रहा है…' : 'प्रकाशित करें' }}
+      </button>
+      <button class="btn btn--ghost" type="button" *ngIf="publishing" (click)="cancelPublish()">रद्द</button>
+    </div>
+
+    <a class="btn btn--ghost" routerLink="/archive" target="_blank">पुराने अंक देखें ↗</a>
+  </section>
+</div>
+
+<p class="alert alert--err" *ngIf="error">{{ error }}</p>
+<p class="alert alert--ok" *ngIf="success">{{ success }}</p>
+<p class="alert alert--ok" *ngIf="published">{{ published }}</p>
+
+<section class="panel archiveList">
+  <div class="archiveList__head">
+    <h2>प्रकाशित PDF अंक</h2>
+    <div class="btnRow">
+      <select class="selectInput" [(ngModel)]="listFilter">
+        <option value="all">सभी श्रेणियाँ</option>
+        <option *ngFor="let c of pdfCategories" [value]="c.slug">{{ c.label }}</option>
+      </select>
+      <button class="btn btn--ghost btn--sm" type="button" (click)="loadList()" [disabled]="listLoading">↻</button>
+    </div>
+  </div>
+
+  <p class="hint" *ngIf="listLoading">लोड हो रहा है…</p>
+
+  <div class="archiveRows" *ngIf="!listLoading && filteredItems().length">
+    <article class="archiveRow" *ngFor="let it of filteredItems()" [class.archiveRow--edit]="editingId === it.id">
+      <ng-container *ngIf="editingId !== it.id">
+        <div class="archiveRow__main">
+          <strong class="archiveRow__title">{{ it.title }}</strong>
+          <span class="archiveRow__meta">
+            {{ categoryName(it.category_slug) }} · {{ it.published_at | date: 'd MMM y' }}
+          </span>
+        </div>
+        <div class="archiveRow__actions">
+          <a class="btn btn--ghost btn--sm" [routerLink]="storyLink(it)" target="_blank">देखें</a>
+          <button class="btn btn--ghost btn--sm" type="button" (click)="startEdit(it)">संपादित</button>
+          <button class="btn btn--danger btn--sm" type="button" (click)="remove(it)">हटाएँ</button>
+        </div>
+      </ng-container>
+
+      <ng-container *ngIf="editingId === it.id">
+        <div class="archiveRow__edit">
+          <label class="field">
+            <span>शीर्षक</span>
+            <input [(ngModel)]="editTitle" />
+          </label>
+          <label class="field">
+            <span>श्रेणी</span>
+            <select [(ngModel)]="editCategory">
+              <option *ngFor="let c of pdfCategories" [value]="c.slug">{{ c.label }}</option>
+            </select>
+          </label>
+          <label class="field">
+            <span>भाषा</span>
+            <select [(ngModel)]="editLang">
+              <option value="hi">हिन्दी</option>
+              <option value="en">English</option>
+            </select>
+          </label>
+          <div class="btnRow">
+            <button class="btn btn--mag btn--sm" type="button" (click)="saveEdit()" [disabled]="savingEdit || !editTitle.trim()">
+              {{ savingEdit ? 'सेव…' : 'सेव करें' }}
+            </button>
+            <button class="btn btn--ghost btn--sm" type="button" (click)="cancelEdit()">रद्द</button>
+          </div>
+        </div>
+      </ng-container>
+    </article>
+  </div>
+
+  <p class="emptyHint" *ngIf="!listLoading && !filteredItems().length">कोई PDF अंक नहीं — ऊपर से अपलोड करें।</p>
+</section>

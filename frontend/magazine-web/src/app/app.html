@@ -1,0 +1,116 @@
+<div class="appShell" *ngIf="!isAdminRoute(); else adminOnly">
+  <header class="siteHeader">
+    <div class="siteHeader__top container">
+      <button class="menuBtn mobileOnly" type="button" (click)="toggleMobileMenu()" aria-label="Menu">☰</button>
+      <a class="brand" routerLink="/" (click)="closeMobileMenu()">
+        <img class="brand__logo" src="/ishqora-logo.png" alt="Ishqora — Love Stories, Live Forever" width="220" height="72" />
+      </a>
+
+      <div class="siteHeader__tools">
+        <div class="search desktopOnly">
+          <input class="search__input" type="search" placeholder="खोजें..." disabled />
+          <span class="search__icon">⌕</span>
+        </div>
+        <a class="social social--fb" href="https://www.facebook.com/meri.niharika.1" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M13.5 22v-7h2.4l.4-3H13.5V9.7c0-.86.24-1.45 1.48-1.45h1.58V5.52A21.5 21.5 0 0 0 14.3 5.4c-2.25 0-3.8 1.37-3.8 3.88V12H8.2v3h2.3v7h3Z"/></svg>
+        </a>
+        <a class="social social--ig" href="https://www.instagram.com/meriniharika8/" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M7.8 2h8.4A5.8 5.8 0 0 1 22 7.8v8.4A5.8 5.8 0 0 1 16.2 22H7.8A5.8 5.8 0 0 1 2 16.2V7.8A5.8 5.8 0 0 1 7.8 2Zm0 2A3.8 3.8 0 0 0 4 7.8v8.4A3.8 3.8 0 0 0 7.8 20h8.4A3.8 3.8 0 0 0 20 16.2V7.8A3.8 3.8 0 0 0 16.2 4H7.8Zm10.55 1.9a.85.85 0 1 1 0 1.7.85.85 0 0 1 0-1.7ZM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"/></svg>
+        </a>
+        <a class="social social--yt" href="https://www.youtube.com/@meriniharika" target="_blank" rel="noopener noreferrer" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><path fill="currentColor" d="M21.6 7.1a2.7 2.7 0 0 0-1.9-1.9C18 4.7 12 4.7 12 4.7s-6 0-7.7.5a2.7 2.7 0 0 0-1.9 1.9A28.2 28.2 0 0 0 2 12a28.2 28.2 0 0 0 .4 4.9 2.7 2.7 0 0 0 1.9 1.9c1.7.5 7.7.5 7.7.5s6 0 7.7-.5a2.7 2.7 0 0 0 1.9-1.9A28.2 28.2 0 0 0 22 12a28.2 28.2 0 0 0-.4-4.9ZM10 15.5v-7l6 3.5-6 3.5Z"/></svg>
+        </a>
+        <ng-container *ngIf="admin.loggedIn(); else showLogin">
+          <button class="adminPill" type="button" (click)="logout()">Logout</button>
+        </ng-container>
+        <ng-template #showLogin>
+          <a class="adminPill" routerLink="/admin/login">Login</a>
+        </ng-template>
+      </div>
+    </div>
+
+    <nav class="mainNav desktopOnly">
+      <div class="mainNav__inner container">
+        <a class="mainNav__link" routerLink="/" routerLinkActive="isActive" [routerLinkActiveOptions]="{ exact: true }">मुखपृष्ठ</a>
+        <a class="mainNav__link" [routerLink]="['/category', 'lekh']">समाचार</a>
+        <a class="mainNav__link" [routerLink]="['/category', 'lekh']">लेख</a>
+        <a class="mainNav__link" [routerLink]="['/category', 'kahani']">कहानी</a>
+        <a class="mainNav__link" [routerLink]="['/category', 'love-story']">Love Story</a>
+        <a class="mainNav__link" [routerLink]="['/category', 'kavita']">कविता</a>
+        <a class="mainNav__link" [routerLink]="['/category', 'swasthya']">स्वास्थ्य</a>
+        <a class="mainNav__link" [routerLink]="['/category', 'sambandh']">संबंध</a>
+        <a class="mainNav__link" [routerLink]="['/category', 'yatra']">यात्रा</a>
+        <a class="mainNav__link" [routerLink]="['/category', 'dharm']">धर्म-आस्था</a>
+        <a class="mainNav__link" [routerLink]="['/category', 'sahitya']">साहित्य</a>
+        <a class="mainNav__link" [routerLink]="['/category', 'manoranjan']">मनोरंजन</a>
+        <a class="mainNav__link" routerLink="/archive">पुराने अंक</a>
+        <a class="mainNav__link" routerLink="/creators">हमारे बारे में</a>
+        <a class="mainNav__link" routerLink="/contact">संपर्क</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="mobileMenu" *ngIf="isMobileMenuOpen()">
+    <nav class="mobileMenu__nav container">
+      <a class="mobileMenu__link" routerLink="/" (click)="closeMobileMenu()">मुखपृष्ठ</a>
+      <a class="mobileMenu__link" [routerLink]="['/category', 'lekh']" (click)="closeMobileMenu()">समाचार</a>
+      <a class="mobileMenu__link" routerLink="/editorial" (click)="closeMobileMenu()">लेख</a>
+      <a class="mobileMenu__link" [routerLink]="['/category', 'kahani']" (click)="closeMobileMenu()">कहानी</a>
+      <a class="mobileMenu__link" [routerLink]="['/category', 'love-story']" (click)="closeMobileMenu()">Love Story</a>
+      <a class="mobileMenu__link" [routerLink]="['/category', 'kavita']" (click)="closeMobileMenu()">कविता</a>
+      <a class="mobileMenu__link" routerLink="/submit" (click)="closeMobileMenu()">रचना भेजें</a>
+      <a class="mobileMenu__link" routerLink="/archive" (click)="closeMobileMenu()">पुराने अंक</a>
+      <a class="mobileMenu__link" routerLink="/contact" (click)="closeMobileMenu()">संपर्क</a>
+    </nav>
+  </div>
+
+  <router-outlet />
+
+  <footer class="siteFooter">
+    <div class="siteFooter__main container">
+      <div class="siteFooter__col">
+        <img class="siteFooter__logo" src="/ishqora-logo.png" alt="Ishqora" />
+        <p class="siteFooter__tag">Love Stories, Live Forever — हर नारी की कहानी, हर भावना की ज़ुबानी।</p>
+      </div>
+      <div class="siteFooter__col">
+        <div class="siteFooter__title">त्वरित लिंक</div>
+        <a routerLink="/">मुखपृष्ठ</a>
+        <a routerLink="/creators">हमारे बारे में</a>
+        <a routerLink="/creators">सदस्य</a>
+        <a routerLink="/contact">संपर्क</a>
+        <a href="#">गोपनीयता नीति</a>
+      </div>
+      <div class="siteFooter__col">
+        <div class="siteFooter__title">श्रेणियाँ</div>
+        <a [routerLink]="['/category', 'lekh']">समाचार</a>
+        <a [routerLink]="['/category', 'kahani']">कहानी</a>
+        <a [routerLink]="['/category', 'love-story']">Love Story</a>
+        <a routerLink="/beauty">स्वास्थ्य</a>
+        <a [routerLink]="['/category', 'kavita']">कविता</a>
+        <a routerLink="/kitchen">रसोई</a>
+        <a routerLink="/interviews">मनोरंजन</a>
+      </div>
+      <div class="siteFooter__col">
+        <div class="siteFooter__title">संपर्क</div>
+        <p><a [href]="'mailto:' + siteEmail">{{ siteEmail }}</a></p>
+        <p>+91-XXXXXXXXXX</p>
+        <p>नई दिल्ली, भारत</p>
+      </div>
+    </div>
+    <div class="siteFooter__bar">
+      <div class="container siteFooter__barInner">
+        <span>© 2026 Ishqora</span>
+        <span class="siteFooter__barLinks">
+          <a routerLink="/creators">हमारे बारे में</a>
+          <a href="#">गोपनीयता</a>
+          <a href="#">नियम</a>
+          <a routerLink="/contact">संपर्क</a>
+        </span>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<ng-template #adminOnly>
+  <router-outlet />
+</ng-template>

@@ -1,0 +1,77 @@
+<div class="pageHead">
+  <h1>उपयोगकर्ता</h1>
+  <p>Admin खाते — लॉगिन एक्सेस प्रबंधित करें</p>
+</div>
+
+<div class="pageGuide">
+  <strong>कैसे करें:</strong>
+  <ol>
+    <li>दाईं ओर <strong>उपयोगकर्ता नाम</strong> और <strong>पासवर्ड</strong> (कम से कम 6 अक्षर) भरें</li>
+    <li><strong>उपयोगकर्ता बनाएँ</strong> दबाएँ</li>
+    <li>हटाने के लिए सूची में <strong>हटाएँ</strong> — मुख्य admin (.env) हट नहीं सकता</li>
+  </ol>
+</div>
+
+<div class="usersLayout">
+  <section class="panel">
+    <h2>Admin उपयोगकर्ता</h2>
+
+    <div class="skeletonList" *ngIf="loading">
+      <div class="skeleton" *ngFor="let _ of [1, 2, 3]"></div>
+    </div>
+
+    <div class="tableWrap" *ngIf="!loading">
+      <table class="dataTable">
+        <thead>
+          <tr>
+            <th>उपयोगकर्ता नाम</th>
+            <th>प्रकार</th>
+            <th>बनाया गया</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let u of users">
+            <td><strong>{{ u.username }}</strong></td>
+            <td>
+              <span class="badge badge--builtin" *ngIf="u.is_builtin">मुख्य</span>
+              <span class="badge badge--pub" *ngIf="!u.is_builtin">कस्टम</span>
+            </td>
+            <td>{{ u.created_at ? (u.created_at | date: 'd MMM y') : '—' }}</td>
+            <td>
+              <button class="btn btn--danger btn--sm" type="button" *ngIf="!u.is_builtin" (click)="remove(u)">
+                हटाएँ
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section class="panel panel--sticky">
+    <h2>नया उपयोगकर्ता</h2>
+
+    <label class="field">
+      <span>उपयोगकर्ता नाम</span>
+      <input [(ngModel)]="username" placeholder="username" autocomplete="off" />
+    </label>
+
+    <label class="field">
+      <span>पासवर्ड</span>
+      <input type="password" [(ngModel)]="password" placeholder="कम से कम 6 अक्षर" autocomplete="new-password" />
+    </label>
+
+    <button
+      class="btn btn--mag"
+      type="button"
+      (click)="create()"
+      [disabled]="saving || !username.trim() || password.length < 6"
+    >
+      {{ saving ? 'बन रहा है…' : 'उपयोगकर्ता बनाएँ' }}
+    </button>
+
+    <p class="alert alert--err" *ngIf="error">{{ error }}</p>
+    <p class="alert alert--ok" *ngIf="success">{{ success }}</p>
+  </section>
+</div>

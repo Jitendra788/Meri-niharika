@@ -1,0 +1,16 @@
+.dashSkeleton {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.dashSkeleton .skeleton {
+  height: 90px;
+}
+
+@media (max-width: 700px) {
+  .dashSkeleton {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}

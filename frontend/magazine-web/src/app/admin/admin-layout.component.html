@@ -1,0 +1,55 @@
+<div class="adminShell" *ngIf="session.isLoggedIn(); else needLogin">
+  <div class="adminOverlay" *ngIf="sidebarOpen()" (click)="closeSidebar()" aria-hidden="true"></div>
+
+  <aside class="sidebar" [class.sidebar--open]="sidebarOpen()">
+    <div class="sidebar__brand">
+      <img src="/ishqora-logo.png" alt="Ishqora" class="sidebar__logo" />
+      <div>
+        <div class="sidebar__title">Admin पैनल</div>
+        <div class="sidebar__sub">Ishqora</div>
+      </div>
+    </div>
+
+    <nav class="sidebar__nav">
+      <a routerLink="/admin/dashboard" routerLinkActive="isActive" [routerLinkActiveOptions]="{ exact: true }">
+        <span class="navIcon">◉</span> डैशबोर्ड
+      </a>
+      <a routerLink="/admin/site" routerLinkActive="isActive">
+        <span class="navIcon">⌂</span> मुखपृष्ठ
+      </a>
+      <a routerLink="/admin/articles" routerLinkActive="isActive">
+        <span class="navIcon">✎</span> लेख / पोस्ट
+      </a>
+      <a routerLink="/admin/archive" routerLinkActive="isActive">
+        <span class="navIcon">📄</span> अंक / PDF
+      </a>
+      <a routerLink="/admin/users" routerLinkActive="isActive">
+        <span class="navIcon">👤</span> उपयोगकर्ता
+      </a>
+    </nav>
+
+    <div class="sidebar__foot">
+      <a class="sidebar__link" routerLink="/" target="_blank">↗ सार्वजनिक साइट</a>
+      <a class="sidebar__link" routerLink="/archive" target="_blank">↗ पुराने अंक</a>
+      <button class="sidebar__logout" type="button" (click)="logout()">लॉगआउट</button>
+    </div>
+  </aside>
+
+  <div class="adminContent">
+    <header class="adminMobileBar">
+      <button class="adminMobileBar__menu" type="button" (click)="toggleSidebar()" aria-label="मेन्यू">☰</button>
+      <span class="adminMobileBar__title">Admin</span>
+      <a class="adminMobileBar__site" routerLink="/" target="_blank">साइट ↗</a>
+    </header>
+    <main class="adminMain">
+      <router-outlet />
+    </main>
+  </div>
+</div>
+
+<ng-template #needLogin>
+  <div class="adminShell adminShell--center">
+    <p>लॉगिन आवश्यक है</p>
+    <a routerLink="/admin/login" class="btn btn--mag">लॉगिन</a>
+  </div>
+</ng-template>

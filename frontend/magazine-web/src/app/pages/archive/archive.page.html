@@ -1,0 +1,45 @@
+<app-page-shell title="पुराने अंक" subtitle="Ishqora के सभी ई-मैगज़ीन अंक">
+  <section class="archive">
+    <div class="archiveToolbar">
+      <button class="btnReload" type="button" (click)="reload()" [disabled]="loading">↻ Refresh</button>
+      <span class="archiveCount" *ngIf="!loading && items.length">{{ items.length }} अंक</span>
+    </div>
+
+    <p class="alert" *ngIf="apiError">{{ apiError }}</p>
+
+    <div class="skeletonGrid" *ngIf="loading">
+      <div class="skeletonCard" *ngFor="let _ of [1, 2, 3, 4, 5, 6]"></div>
+    </div>
+
+    <p class="emptyMsg" *ngIf="!loading && !apiError && items.length === 0">
+      अभी कोई अंक नहीं। Admin → Archive से अपलोड करें।
+    </p>
+
+    <div class="cardGrid" *ngIf="!loading && items.length">
+      <article class="magCard" *ngFor="let i of items">
+        <a class="magCard__coverLink" [routerLink]="storyLink(i)">
+          <img
+            class="magCard__img magCard__img--cover"
+            *ngIf="coverImage(i); else noCover"
+            [src]="coverImage(i)"
+            [alt]="i.title"
+            loading="lazy"
+          />
+          <ng-template #noCover>
+            <div class="magCard__img magCard__img--placeholder">
+              <span class="pdfIcon">क</span>
+            </div>
+          </ng-template>
+        </a>
+        <div class="magCard__body">
+          <h3 class="magCard__title">{{ i.title }}</h3>
+          <p class="magCard__excerpt">{{ i.excerpt || 'ई-मैगज़ीन अंक पढ़ें…' }}</p>
+          <div class="magCard__actions">
+            <a class="magCard__more" [routerLink]="storyLink(i)">पढ़ें</a>
+            <button class="magCard__pdfBtn" type="button" (click)="openPdf(i, $event)">PDF खोलें</button>
+          </div>
+        </div>
+      </article>
+    </div>
+  </section>
+</app-page-shell>

@@ -1,0 +1,23 @@
+# Secrets & local env
+backend/.env
+**/.env
+!.env.example
+
+# Python
+backend/.venv/
+**/__pycache__/
+*.py[cod]
+
+# Node / Angular
+frontend/magazine-web/node_modules/
+frontend/magazine-web/dist/
+frontend/magazine-web/.angular/
+
+# Logs (keep uploads in git for Render deploy)
+backend/uploads/automation.log
+
+# OS / IDE
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/

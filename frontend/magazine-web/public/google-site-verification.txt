@@ -1,0 +1,19 @@
+Google Search Console — meriniharika.org
+
+1. https://search.google.com/search-console पर जाएँ
+2. Property add करें: https://www.meriniharika.org
+3. "HTML file" verification चुनें
+4. Google जो file name दे (जैसे googleabc123.html), उसी नाम की file public/ folder में बनाएँ
+5. File के अंदर Google का exact one-line code paste करें
+6. Site deploy करें, फिर Search Console में Verify दबाएँ
+
+या meta tag method:
+- index.html में यह line add करें:
+  <meta name="google-site-verification" content="YOUR_CODE_FROM_GOOGLE" />
+
+Files already on site:
+- robots.txt  → https://www.meriniharika.org/robots.txt
+- sitemap.xml → https://www.meriniharika.org/sitemap.xml
+
+After verify, Search Console → Sitemaps → submit:
+https://www.meriniharika.org/sitemap.xml

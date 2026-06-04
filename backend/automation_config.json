@@ -1,0 +1,24 @@
+{
+  "timezone": "Asia/Kolkata",
+  "story_parts_per_day": 1,
+  "rss_items_per_day": 12,
+  "news_category": "lekh",
+  "rss_feeds": [
+    {
+      "name": "BBC Hindi",
+      "url": "https://feeds.bbci.co.uk/hindi/rss.xml"
+    },
+    {
+      "name": "NDTV Hindi",
+      "url": "https://feeds.feedburner.com/ndtvnews-hindi-news"
+    },
+    {
+      "name": "The Wire Hindi",
+      "url": "https://thewirehindi.com/feed/"
+    },
+    {
+      "name": "BBC India",
+      "url": "https://feeds.bbci.co.uk/news/world/asia/india/rss.xml"
+    }
+  ]
+}
