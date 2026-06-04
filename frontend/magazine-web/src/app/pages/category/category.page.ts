@@ -189,7 +189,7 @@ export class CategoryPage implements OnInit {
   }
 
   private defaultKahaniCover(slug: string): string {
-    return `/uploads/images/kahani/${slug}.svg`;
+    return `/uploads/images/kahani/${slug}.jpg`;
   }
 
   cardImage(item: CategoryCard): string {
@@ -198,7 +198,7 @@ export class CategoryPage implements OnInit {
     }
     const url = item.cover_url || '';
     if (!url && item.tag === 'कहानी') {
-      return `${this.apiBase}/uploads/images/kahani/${item.slug}.svg`;
+      return `${this.apiBase}/uploads/images/kahani/${item.slug}.jpg`;
     }
     if (!url) return `${this.apiBase}/uploads/images/news-card.svg`;
     if (url.startsWith('http')) return url;
@@ -214,7 +214,7 @@ export class CategoryPage implements OnInit {
       return;
     }
     if (item.tag === 'कहानी' && item.slug) {
-      img.src = `${this.apiBase}/uploads/images/kahani/${item.slug}.svg`;
+      img.src = `${this.apiBase}/uploads/images/kahani/${item.slug}.jpg`;
       return;
     }
     const key = item.series_slug || item.slug;

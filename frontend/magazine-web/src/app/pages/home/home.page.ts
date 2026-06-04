@@ -176,7 +176,7 @@ export class HomePage implements OnDestroy {
     img.dataset['fallback'] = '1';
     const key = c.link.replace(/^\/article\//, '').replace(/-bhag-\d+$/, '');
     if (c.isKahani && key) {
-      img.src = this.siteApi.resolveAsset(`/uploads/images/kahani/${key}.svg`);
+      img.src = this.siteApi.resolveAsset(`/uploads/images/kahani/${key}.jpg`);
     } else if (!c.isNews && key) {
       img.src = this.siteApi.resolveAsset(`/uploads/images/love-story/${key}.svg`);
     } else {
@@ -192,7 +192,7 @@ export class HomePage implements OnDestroy {
       img = this.siteApi.resolveAsset(`/uploads/images/love-story/${seriesKey}.jpg`);
     }
     if (!img && (this.isMoralKahani(a) || a.category_slug === 'kahani')) {
-      img = this.siteApi.resolveAsset(`/uploads/images/kahani/${a.slug}.svg`);
+      img = this.siteApi.resolveAsset(`/uploads/images/kahani/${a.slug}.jpg`);
     }
     if (!img && this.isNewsArticle(a)) {
       img = this.siteApi.resolveAsset('/uploads/images/news-card.svg');

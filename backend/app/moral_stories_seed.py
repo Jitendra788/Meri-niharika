@@ -16,8 +16,9 @@ def _story(
     moral: str,
     now: datetime,
     day_offset: int,
+    slug_key: str | None = None,
 ) -> dict[str, Any]:
-    slug = slugify(title) or f"naitik-kahani-{day_offset}"
+    slug = slug_key or slugify(title) or f"naitik-kahani-{day_offset}"
     body = f"{content.strip()}\n\n**सीख:** {moral}"
     published = datetime(now.year, now.month, now.day, 10, 0, 0, tzinfo=timezone.utc) - timedelta(
         days=day_offset
@@ -28,7 +29,7 @@ def _story(
         "slug": slug,
         "excerpt": excerpt,
         "content": body,
-        "cover_url": f"/uploads/images/kahani/{slug}.svg",
+        "cover_url": f"/uploads/images/kahani/{slug}.jpg",
         "category_slug": "kahani",
         "tags": ["नैतिक कहानी", "बच्चों की कहानी", "Ishqora"],
         "language": "hi",
@@ -201,7 +202,9 @@ def append_moral_stories_to_manifest() -> int:
     items = load_articles()
     existing_titles = {it.get("title") for it in items if it.get("title")}
     added = 0
-    for story in moral_stories_batch():
+    from .moral_stories_seed_batch2 import moral_stories_batch2
+
+    for story in moral_stories_batch() + moral_stories_batch2():
         if story["title"] in existing_titles:
             continue
         story["slug"] = unique_slug(story["slug"], items)
