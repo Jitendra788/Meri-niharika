@@ -1,5 +1,4 @@
-# Triggers daily automation on Render (RSS news + story drip).
-# Repo → Settings → Secrets: RENDER_API_URL, CRON_SECRET
+# Daily RSS + story drip — runs in GitHub, commits manifest, triggers Pages redeploy.
 
 name: Daily automation
 
@@ -9,18 +8,40 @@ on:
     - cron: "30 0 * * *"
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
-  run-daily:
+  daily-update:
     runs-on: ubuntu-latest
     steps:
-      - name: Run daily update on Render
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install backend dependencies
+        working-directory: backend
+        run: pip install -r requirements.txt
+
+      - name: Run daily automation
+        working-directory: backend
         env:
-          RENDER_API_URL: ${{ secrets.RENDER_API_URL }}
-          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+          PYTHONPATH: .
+          UPLOADS_DIR: uploads
+        run: python scripts/daily_automation.py
+
+      - name: Commit and push updates
         run: |
-          if [ -z "$RENDER_API_URL" ] || [ -z "$CRON_SECRET" ]; then
-            echo "Skip: set RENDER_API_URL and CRON_SECRET in repo secrets"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add backend/uploads/articles_manifest.json \
+                  backend/uploads/automation_state.json \
+                  backend/uploads/images/rss || true
+          if git diff --staged --quiet; then
+            echo "No content changes today."
             exit 0
           fi
-          curl -fsS -X POST "${RENDER_API_URL%/}/api/cron/daily" \
-            -H "X-Cron-Secret: ${CRON_SECRET}"
+          git commit -m "chore: daily RSS and story update [automated]"
+          git push

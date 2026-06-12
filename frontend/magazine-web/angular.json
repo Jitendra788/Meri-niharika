@@ -55,6 +55,10 @@
               ],
               "outputHashing": "all"
             },
+            "github-pages": {
+              "baseHref": "/Meri-niharika/",
+              "deployUrl": "/Meri-niharika/"
+            },
             "development": {
               "optimization": false,
               "extractLicenses": false,

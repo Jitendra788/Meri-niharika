@@ -1,0 +1,59 @@
+# Live site on GitHub Pages — no Vercel/Render account needed.
+# After first push: GitHub repo → Settings → Pages → Source: GitHub Actions (one-time).
+
+name: Deploy GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "22"
+          cache: npm
+          cache-dependency-path: frontend/magazine-web/package-lock.json
+
+      - name: Sync articles + images into public/
+        run: node frontend/magazine-web/scripts/sync-static-data.mjs
+
+      - name: Build Angular for GitHub Pages
+        working-directory: frontend/magazine-web
+        run: |
+          npm ci
+          npx ng build --configuration=production,github-pages
+
+      - name: SPA fallback for GitHub Pages
+        run: |
+          OUT=frontend/magazine-web/dist/magazine-web/browser
+          cp "$OUT/index.html" "$OUT/404.html"
+          touch "$OUT/.nojekyll"
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: frontend/magazine-web/dist/magazine-web/browser
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
