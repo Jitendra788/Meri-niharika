@@ -8,12 +8,12 @@ Render/Vercel ke bina site live ho sakti hai — sirf GitHub se.
 
 Har `main` push par site rebuild hoti hai. Roz 6 AM IST par RSS news auto-import hoti hai.
 
-## Ek baar enable karein (30 sec)
+## Ek baar enable karein (30 sec) — **zaroori**
 
-1. https://github.com/Jitendra788/Meri-niharika → **Settings**
-2. **Pages** (left menu)
-3. **Build and deployment** → Source: **GitHub Actions**
-4. **Actions** tab → **Deploy GitHub Pages** workflow → green ✓
+1. Is link par jayein: **https://github.com/Jitendra788/Meri-niharika/settings/pages**
+2. **Build and deployment** → Source: **GitHub Actions**
+3. **Actions** tab → **Deploy GitHub Pages** → green ✓ hone ka wait karein
+4. Site: **https://jitendra788.github.io/Meri-niharika/**
 
 ## Kya automatic chalta hai
 
