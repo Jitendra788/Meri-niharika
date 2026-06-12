@@ -104,15 +104,49 @@ Vercel project → **Environment Variables**:
 
 ---
 
-## Daily automation (optional)
+## Daily automation (live site पर खबरें + story भाग)
 
-Windows Task सिर्फ local PC पर है। Server पर:
+Windows Task सिर्फ **local PC** पर चलता है। Live (Render) पर **cron-job.org** (free) से trigger करें:
 
-- Render **Cron Job** (paid) या
-- https://cron-job.org (free) — हर दिन hit:  
-  `https://ishqora-api.onrender.com/api/health` (wake) + अलग script endpoint अभी नहीं है
+### 1) Render env
 
-अभी stories `articles_manifest.json` से serve होती हैं — daily part publish के लिए बाद में cron endpoint add कर सकते हैं।
+Dashboard → **ishqora-api** → **Environment** → `CRON_SECRET` copy करें (या नया set करें)।
+
+### 2) cron-job.org (recommended)
+
+1. https://cron-job.org → free account
+2. **Create cronjob**
+3. URL: `https://YOUR-RENDER-URL.onrender.com/api/cron/daily`
+4. Schedule: **Daily 6:00 AM** (Asia/Kolkata)
+5. Request method: **POST**
+6. Headers: `X-Cron-Secret` = आपका `CRON_SECRET`
+7. Save
+
+Optional — पहली बार story drip चालू करने के लिए (भाग 2+ scheduled):
+
+`POST .../api/cron/daily?prepare=true` (same header, एक बार)
+
+### 3) Test (PowerShell)
+
+```powershell
+$secret = "YOUR_CRON_SECRET"
+Invoke-RestMethod -Method Post -Uri "https://YOUR-RENDER-URL.onrender.com/api/cron/daily" `
+  -Headers @{ "X-Cron-Secret" = $secret }
+```
+
+Status देखें:
+
+```powershell
+Invoke-RestMethod -Uri "https://YOUR-RENDER-URL.onrender.com/api/cron/status" `
+  -Headers @{ "X-Cron-Secret" = $secret }
+```
+
+### 4) GitHub Actions (optional)
+
+Repo → **Settings → Secrets**: `RENDER_API_URL`, `CRON_SECRET`  
+Workflow: `.github/workflows/daily-cron.yml` (हर दिन 6:00 AM IST)
+
+**ध्यान:** Vercel पर `BACKEND_URL` set होना चाहिए — तभी live site API से नई खबरें दिखेंगी।
 
 ---
 

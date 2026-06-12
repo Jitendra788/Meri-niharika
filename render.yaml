@@ -20,11 +20,13 @@ services:
         generateValue: true
       - key: ADMIN_KEY
         generateValue: true
+      - key: CRON_SECRET
+        generateValue: true
       - key: ADMIN_PASSWORD
         generateValue: true
       - key: ADMIN_USERNAME
         value: admin
       - key: ALLOWED_ORIGINS
-        value: http://localhost:4200,https://localhost:4200,https://meri-niharika.vercel.app
+        value: http://localhost:4200,https://localhost:4200,http://127.0.0.1:4200,https://meri-niharika.vercel.app,https://ishqora.com,https://www.ishqora.com
       - key: DATABASE_URL
         sync: false

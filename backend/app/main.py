@@ -62,6 +62,7 @@ from .pdf_compress import compress_pdf_file
 from .pdf_pages import ensure_pdf_page_images, ensure_pdf_pages_batch, pdf_content_page_count
 from .pdf_text import extract_pdf_text_batch, texts_to_paragraphs
 from .pdf_thumbnails import ensure_pdf_cover, generate_missing_covers, get_pdf_cover_url
+from .seed_content import CATEGORY_SEED
 from .settings import settings
 from .site_settings import load_settings, save_settings
 from .utils import slugify
@@ -137,8 +138,60 @@ async def health() -> dict[str, str]:
     return {"status": "ok", "api": "up", "database": "up" if db_ok else "down"}
 
 
+def _verify_cron_secret(x_cron_secret: str | None) -> None:
+    if not x_cron_secret or x_cron_secret != settings.effective_cron_secret:
+        raise HTTPException(status_code=401, detail="Unauthorized")
+
+
+@app.post("/api/cron/daily")
+async def cron_daily(
+    prepare: bool = Query(default=False, description="One-time: move love-story भाग 2+ to scheduled"),
+    x_cron_secret: str | None = Header(default=None),
+) -> dict[str, Any]:
+    """Daily story drip + RSS news — call from cron-job.org or GitHub Actions."""
+    import asyncio
+
+    from .daily_automation import run_daily
+
+    _verify_cron_secret(x_cron_secret)
+    return await asyncio.to_thread(run_daily, prepare=prepare)
+
+
+@app.get("/api/cron/status")
+async def cron_status(x_cron_secret: str | None = Header(default=None)) -> dict[str, Any]:
+    """Last automation runs (for debugging)."""
+    from .daily_automation import load_config, load_state
+
+    _verify_cron_secret(x_cron_secret)
+    state = load_state()
+    return {
+        "timezone": load_config().get("timezone", "Asia/Kolkata"),
+        "last_story_date": state.get("last_story_date"),
+        "last_story_slug": state.get("last_story_slug"),
+        "recent_runs": list(state.get("runs") or [])[-10:],
+    }
+
+
 def _id_str(doc: dict[str, Any]) -> str:
     return str(doc.get("_id"))
+
+
+def _default_categories(lang: str | None = None) -> list[CategoryOut]:
+    """Built-in categories when PostgreSQL is down or empty."""
+    rows = [
+        CategoryOut(
+            id=slug,
+            name=name,
+            slug=slug,
+            language="hi",
+            order=order,
+            is_active=True,
+        )
+        for slug, name, order in CATEGORY_SEED
+    ]
+    if lang:
+        rows = [r for r in rows if r.language == lang]
+    return rows
 
 
 def _enrich_archive_cover(item: dict[str, Any]) -> dict[str, Any]:
@@ -231,19 +284,21 @@ async def list_categories(
 ) -> list[CategoryOut]:
     try:
         rows = await store.list_categories(lang=lang, active_only=True)
-        return [
-            CategoryOut(
-                id=r["_id"],
-                name=r["name"],
-                slug=r["slug"],
-                language=r.get("language"),
-                order=r.get("order", 0),
-                is_active=bool(r.get("is_active", True)),
-            )
-            for r in rows
-        ]
-    except Exception as e:
-        raise HTTPException(status_code=503, detail="Database unavailable") from e
+        if rows:
+            return [
+                CategoryOut(
+                    id=r["_id"],
+                    name=r["name"],
+                    slug=r["slug"],
+                    language=r.get("language"),
+                    order=r.get("order", 0),
+                    is_active=bool(r.get("is_active", True)),
+                )
+                for r in rows
+            ]
+    except Exception:
+        pass
+    return _default_categories(lang)
 
 
 @app.post("/api/categories", response_model=CategoryOut)

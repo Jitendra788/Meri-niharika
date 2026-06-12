@@ -66,9 +66,11 @@ JSON articles आने चाहिए।
 
 | URL | सही हो तो |
 |-----|-----------|
-| https://meri-niharika.vercel.app/api/config | `"apiBaseUrl":"https://...onrender.com"` |
+| https://meri-niharika.vercel.app/api/config | `{"apiBaseUrl":"https://...onrender.com"}` या proxy mode में `""` (दोनों OK) |
 | https://meri-niharika.vercel.app/api/health | `"status":"ok"` |
 | https://meri-niharika.vercel.app/ | पीला banner **नहीं**, खबरें + slider images |
+
+**Quick push + checklist:** `powershell -File scripts/deploy-live.ps1`
 
 ---
 

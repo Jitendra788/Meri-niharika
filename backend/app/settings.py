@@ -21,6 +21,11 @@ class Settings(BaseSettings):
     jwt_secret: str = "change-me-too"
     admin_username: str = "admin"
     admin_password: str = "admin123"
+    cron_secret: str = ""
+
+    @property
+    def effective_cron_secret(self) -> str:
+        return self.cron_secret.strip() or self.admin_key
 
     @property
     def async_database_url(self) -> str:

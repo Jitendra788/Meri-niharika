@@ -1,0 +1,26 @@
+# Triggers daily automation on Render (RSS news + story drip).
+# Repo → Settings → Secrets: RENDER_API_URL, CRON_SECRET
+
+name: Daily automation
+
+on:
+  schedule:
+    # 00:30 UTC = 6:00 AM IST
+    - cron: "30 0 * * *"
+  workflow_dispatch:
+
+jobs:
+  run-daily:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run daily update on Render
+        env:
+          RENDER_API_URL: ${{ secrets.RENDER_API_URL }}
+          CRON_SECRET: ${{ secrets.CRON_SECRET }}
+        run: |
+          if [ -z "$RENDER_API_URL" ] || [ -z "$CRON_SECRET" ]; then
+            echo "Skip: set RENDER_API_URL and CRON_SECRET in repo secrets"
+            exit 0
+          fi
+          curl -fsS -X POST "${RENDER_API_URL%/}/api/cron/daily" \
+            -H "X-Cron-Secret: ${CRON_SECRET}"
