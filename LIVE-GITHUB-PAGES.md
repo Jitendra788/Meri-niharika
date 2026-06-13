@@ -15,12 +15,29 @@ Har `main` push par site rebuild hoti hai. Roz 6 AM IST par RSS news auto-import
 3. **Actions** tab → **Deploy GitHub Pages** → green ✓ hone ka wait karein
 4. Site: **https://jitendra788.github.io/Meri-niharika/**
 
-## Kya automatic chalta hai
+## Daily update kaise chalta hai
 
-| Workflow | Kaam |
-|----------|------|
-| `deploy-github-pages.yml` | Har push par site build + deploy |
-| `daily-cron.yml` | Roz subah RSS + story update → commit → redeploy |
+| Jagah | Kya hota hai |
+|-------|----------------|
+| **GitHub Actions** (roz 6 AM IST) | RSS import → commit → **site rebuild + deploy** |
+| **Aapka PC** (Task Scheduler 6 AM) | Same + `git push` (PC on hona chahiye) |
+
+**Pehli baar (zaroori):** https://github.com/Jitendra788/Meri-niharika/settings/pages → Source: **GitHub Actions**
+
+Manual test abhi: Actions → **Daily update and deploy** → **Run workflow**
+
+## Story भाग (drip) alag se
+
+Saare love-story भाग ab published hain. Roz naya भाग ke liye ek baar:
+
+```powershell
+cd backend
+$env:PYTHONPATH='.'
+python scripts/daily_automation.py --prepare
+git add backend/uploads/articles_manifest.json
+git commit -m "Enable love-story daily drip"
+git push
+```
 
 ## Custom domain (ishqora.com)
 
