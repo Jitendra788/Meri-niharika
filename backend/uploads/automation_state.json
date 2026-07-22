@@ -1,10 +1,5 @@
 {
   "rss_urls": [
-    "https://www.bbc.com/hindi/articles/c5yzdpdx4v3o?at_medium=rss&at_campaign=rss",
-    "https://www.bbc.com/hindi/articles/c5yze6g5y3zo?at_medium=rss&at_campaign=rss",
-    "https://www.bbc.com/hindi/articles/c5yzgzvgywwo?at_medium=rss&at_campaign=rss",
-    "https://www.bbc.com/hindi/articles/c5yzl0lyqxno?at_medium=rss&at_campaign=rss",
-    "https://www.bbc.com/hindi/articles/c5yzlzzrdk5o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/c5yzn5kpmevo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/c5yzn7j93v4o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/c5yzp2vvp4zo?at_medium=rss&at_campaign=rss",
@@ -28,6 +23,7 @@
     "https://www.bbc.com/hindi/articles/c707p04n6y2o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/c70g4e3dn5ko?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/c70yk63z985o?at_medium=rss&at_campaign=rss",
+    "https://www.bbc.com/hindi/articles/c74g5zdlnyyo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/c74g84nvkzro?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/c74g97013z1o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/c74yv1nje3jo?at_medium=rss&at_campaign=rss",
@@ -67,6 +63,7 @@
     "https://www.bbc.com/hindi/articles/c892gzk2nvjo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/c8d2pggymqro?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/c8enkldwn66o?at_medium=rss&at_campaign=rss",
+    "https://www.bbc.com/hindi/articles/c8enw19new1o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/c8j2exy0yv7o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/c8jx9y7zvdpo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/c8r216yxlkvo?at_medium=rss&at_campaign=rss",
@@ -285,6 +282,7 @@
     "https://www.bbc.com/hindi/articles/cp8r1d47vlno?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cp8rj9eg33go?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cp8ryyyn962o?at_medium=rss&at_campaign=rss",
+    "https://www.bbc.com/hindi/articles/cp8x3rjxe39o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cp9erdy3e4xo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cp9l5487yn5o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cp9l909pp21o?at_medium=rss&at_campaign=rss",
@@ -306,6 +304,7 @@
     "https://www.bbc.com/hindi/articles/cq61eyqymyzo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cq81305jeq1o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cq815p0p8n2o?at_medium=rss&at_campaign=rss",
+    "https://www.bbc.com/hindi/articles/cq89qezkzpeo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cqj1re40d1xo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cqjx085n9xqo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cql1qdzw5y0o?at_medium=rss&at_campaign=rss",
@@ -403,6 +402,7 @@
     "https://www.bbc.com/hindi/articles/cx2jvq88gk1o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cx2l6kklgk5o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cx2vp22d2zzo?at_medium=rss&at_campaign=rss",
+    "https://www.bbc.com/hindi/articles/cx2vp77gky5o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cx2w501qgn9o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cx2wn33gp3yo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cx2wy702lzro?at_medium=rss&at_campaign=rss",
@@ -771,6 +771,12 @@
       "story": null,
       "rss_count": 7,
       "at": "2026-07-21T03:56:14.009216+00:00"
+    },
+    {
+      "date": "2026-07-22",
+      "story": null,
+      "rss_count": 3,
+      "at": "2026-07-22T03:57:26.020746+00:00"
     }
   ]
 }
