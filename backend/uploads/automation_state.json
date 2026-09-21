@@ -1,7 +1,5 @@
 {
   "rss_urls": [
-    "https://www.bbc.com/hindi/articles/cn070z5dj39o?at_medium=rss&at_campaign=rss",
-    "https://www.bbc.com/hindi/articles/cn078wk64pxo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cn07ewl26nyo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cn07gdl8l5go?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cn07jgwgwrzo?at_medium=rss&at_campaign=rss",
@@ -269,6 +267,7 @@
     "https://www.bbc.com/hindi/articles/cvgzm64jkg3o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cvgzzq4j7jzo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cw770k321xl5o?at_medium=rss&at_campaign=rss",
+    "https://www.bbc.com/hindi/articles/cw99dlr0vyljo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cwp93jvz00vpo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cwvgyvq2yv5po?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cwy08yz5nqyo?at_medium=rss&at_campaign=rss",
@@ -367,6 +366,7 @@
     "https://www.bbc.com/hindi/articles/cx2zvvz3x3yo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cx2zw1ggp49o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cx5yl2d3v78zo?at_medium=rss&at_campaign=rss",
+    "https://www.bbc.com/hindi/articles/cx5ylj50m7zeo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cx8d3lydgyqqo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cxyvz504vpv8o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cy04krlk808o?at_medium=rss&at_campaign=rss",
@@ -502,12 +502,6 @@
     "https://www.bbc.com/sport/cricket/articles/czdev6lp8p9o?at_medium=rss&at_campaign=rss"
   ],
   "runs": [
-    {
-      "date": "2026-07-23",
-      "story": null,
-      "rss_count": 5,
-      "at": "2026-07-23T03:54:20.134423+00:00"
-    },
     {
       "date": "2026-07-24",
       "story": null,
@@ -861,6 +855,12 @@
       "story": null,
       "rss_count": 3,
       "at": "2026-09-20T05:12:58.662155+00:00"
+    },
+    {
+      "date": "2026-09-21",
+      "story": null,
+      "rss_count": 4,
+      "at": "2026-09-21T05:17:27.337365+00:00"
     }
   ]
 }
