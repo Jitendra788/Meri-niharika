@@ -1,10 +1,5 @@
 {
   "rss_urls": [
-    "https://www.bbc.com/hindi/articles/cn07zwe0pg3o?at_medium=rss&at_campaign=rss",
-    "https://www.bbc.com/hindi/articles/cn0jgzx07p5o?at_medium=rss&at_campaign=rss",
-    "https://www.bbc.com/hindi/articles/cn0n549q757o?at_medium=rss&at_campaign=rss",
-    "https://www.bbc.com/hindi/articles/cn0n7j78r87o?at_medium=rss&at_campaign=rss",
-    "https://www.bbc.com/hindi/articles/cn0nnkwrexvo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cn0v74572plo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cn0vjpwkqx0o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cn0vn472yp7o?at_medium=rss&at_campaign=rss",
@@ -141,6 +136,7 @@
     "https://www.bbc.com/hindi/articles/cqlykpl6pvv3o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cqn0j90e9j0po?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cqvgy8dv7e02o?at_medium=rss&at_campaign=rss",
+    "https://www.bbc.com/hindi/articles/cqwyzd4y42rro?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cqwyzgjlyznzo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cqwyzk3ke4zeo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cqx13y3209eo?at_medium=rss&at_campaign=rss",
@@ -194,6 +190,7 @@
     "https://www.bbc.com/hindi/articles/crm0nxr1k18o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/crm0x7wk00ro?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/crm9ex2397zo?at_medium=rss&at_campaign=rss",
+    "https://www.bbc.com/hindi/articles/crmnrn4gmrlo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/crmrdp2gz43o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/crmrevg7r18o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/crmrj044wz7o?at_medium=rss&at_campaign=rss",
@@ -311,6 +308,7 @@
     "https://www.bbc.com/hindi/articles/cwyzev3lryqo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cwyzew517gvo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cwyzj3w80nxo?at_medium=rss&at_campaign=rss",
+    "https://www.bbc.com/hindi/articles/cwyzjqr0r23o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cwyzkem9z70o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cwyzngvp7zzo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cwyznkkewepo?at_medium=rss&at_campaign=rss",
@@ -368,6 +366,8 @@
     "https://www.bbc.com/hindi/articles/cx5yl2d3v78zo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cx5ylj50m7zeo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cx8d3lydgyqqo?at_medium=rss&at_campaign=rss",
+    "https://www.bbc.com/hindi/articles/cxddvpp0qezpo?at_medium=rss&at_campaign=rss",
+    "https://www.bbc.com/hindi/articles/cxr50j479g93o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cxyvz504vpv8o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cy04krlk808o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cy06492lyp6o?at_medium=rss&at_campaign=rss",
@@ -502,12 +502,6 @@
     "https://www.bbc.com/sport/cricket/articles/czdev6lp8p9o?at_medium=rss&at_campaign=rss"
   ],
   "runs": [
-    {
-      "date": "2026-07-25",
-      "story": null,
-      "rss_count": 5,
-      "at": "2026-07-25T03:48:42.867493+00:00"
-    },
     {
       "date": "2026-07-26",
       "story": null,
@@ -861,6 +855,12 @@
       "story": null,
       "rss_count": 3,
       "at": "2026-09-22T05:15:31.921854+00:00"
+    },
+    {
+      "date": "2026-09-23",
+      "story": null,
+      "rss_count": 6,
+      "at": "2026-09-23T05:00:12.955996+00:00"
     }
   ]
 }
