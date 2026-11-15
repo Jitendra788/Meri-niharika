@@ -1,6 +1,5 @@
 {
   "rss_urls": [
-    "https://www.bbc.com/hindi/articles/cre4z95j49po?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cred31d41wqgo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cred7zn3lz37o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/crel0d7yjy8o?at_medium=rss&at_campaign=rss",
@@ -167,6 +166,7 @@
     "https://www.bbc.com/hindi/articles/cw770k321xl5o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cw77p0vn7x7zo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cw77p4v164y6o?at_medium=rss&at_campaign=rss",
+    "https://www.bbc.com/hindi/articles/cw782dz9l79yo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cw7vp9z1lpy3o?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cw7vpy1vneevo?at_medium=rss&at_campaign=rss",
     "https://www.bbc.com/hindi/articles/cw8048k7gzl1o?at_medium=rss&at_campaign=rss",
@@ -502,12 +502,6 @@
     "https://www.bbc.com/sport/cricket/articles/czdev6lp8p9o?at_medium=rss&at_campaign=rss"
   ],
   "runs": [
-    {
-      "date": "2026-09-16",
-      "story": null,
-      "rss_count": 4,
-      "at": "2026-09-16T05:05:15.740383+00:00"
-    },
     {
       "date": "2026-09-17",
       "story": null,
@@ -861,6 +855,12 @@
       "story": null,
       "rss_count": 5,
       "at": "2026-11-14T06:53:07.205014+00:00"
+    },
+    {
+      "date": "2026-11-15",
+      "story": null,
+      "rss_count": 2,
+      "at": "2026-11-15T06:58:37.659342+00:00"
     }
   ]
 }
